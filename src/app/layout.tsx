@@ -34,7 +34,6 @@ export default function RootLayout({
           <div className="noise-overlay" />
         </div>
 
-        <CustomCursor />
         <SmoothScroll>
           <main className="relative z-10">{children}</main>
         </SmoothScroll>
