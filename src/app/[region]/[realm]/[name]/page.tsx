@@ -42,13 +42,15 @@ const CLASS_COLORS: Record<string, string> = {
     "evoker": "#33937F",
 };
 
+// High quality transparent renders
 const CHARACTER_RENDERS: Record<string, string> = {
-    "moussman": "https://render.worldofwarcraft.com/eu/character/ysondre/41/176557609-main.jpg",
-    "mamènne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main.jpg",
-    "mamenne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main.jpg"
+    "moussman": "https://render.worldofwarcraft.com/eu/character/ysondre/41/176557609-main-raw.png",
+    "mamènne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main-raw.png",
+    "mamenne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main-raw.png"
 };
 
 function safeDecode(val: string) {
+    if (!val) return "";
     try {
         return decodeURIComponent(val);
     } catch {
@@ -59,16 +61,20 @@ function safeDecode(val: string) {
 export default async function CharacterHubPage({ params }: PageProps) {
     try {
         const p = await params;
-        if (!p) throw new Error("Missing parameters");
+        if (!p || !p.region || !p.realm || !p.name) {
+            throw new Error("Missing route parameters");
+        }
 
-        const region = String(p.region || "").toLowerCase();
-        const realm = String(p.realm || "").toLowerCase();
-        const name = String(p.name || "").toLowerCase();
+        const region = String(p.region).toLowerCase();
+        const realm = String(p.realm).toLowerCase();
+        const name = String(p.name).toLowerCase();
 
         // Safety check for encoding issues
         const decodedName = safeDecode(name).toLowerCase();
 
+        // Fetch data from Raider.io API
         const character = await getCharacterProfile(region, realm, name);
+
         const classKey = character?.class?.toLowerCase() || "";
         const classColor = CLASS_COLORS[classKey] || "#ffffff";
         const characterRender = CHARACTER_RENDERS[decodedName] || CHARACTER_RENDERS[name];
@@ -130,22 +136,22 @@ export default async function CharacterHubPage({ params }: PageProps) {
         }
 
         return (
-            <div className="relative min-h-screen w-full flex flex-col items-center overflow-x-hidden pt-12">
+            <div className="relative min-h-screen w-full flex flex-col items-center overflow-x-hidden pt-12 bg-black">
                 {/* Dynamic Background Glow Overlay */}
                 <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
                     <div
-                        className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[150px] opacity-20 transition-colors duration-1000"
+                        className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[150px] opacity-20"
                         style={{ backgroundColor: classColor }}
                     />
                 </div>
 
-                {/* Character Skin Background */}
+                {/* Character Skin Background Render */}
                 {characterRender && (
-                    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center">
+                    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-10">
                         <img
                             src={characterRender}
                             alt=""
-                            className="h-[130vh] w-auto object-contain scale-110 opacity-10 filter saturate-[1.3] brightness-110 select-none"
+                            className="h-[140vh] w-auto object-contain scale-125 filter saturate-[1.5] brightness-125 select-none"
                         />
                     </div>
                 )}
@@ -169,17 +175,19 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     ) : (
                         <div className="w-full grid grid-cols-1 lg:grid-cols-[1.2fr_1fr_1.2fr] gap-0 items-start">
 
+                            {/* Left Side: Large Full Render */}
                             <div className="hidden lg:flex justify-start shrink-0 pointer-events-none sticky top-12 left-0 h-[85vh]">
                                 <div className="relative w-full h-full flex flex-col justify-center">
                                     <img
                                         src={characterRender}
                                         alt={character.name}
-                                        className="h-full w-auto object-contain drop-shadow-[0_0_80px_rgba(255,255,255,0.2)] filter saturate-[1.4] brightness-110 -translate-x-[15%]"
+                                        className="h-full w-auto object-contain drop-shadow-[0_0_100px_rgba(255,255,255,0.2)] filter saturate-[1.4] brightness-110 -translate-x-[20%]"
                                     />
                                     <div className="absolute bottom-20 left-10 w-64 h-16 bg-black/60 blur-[100px] rounded-full" />
                                 </div>
                             </div>
 
+                            {/* Center Content */}
                             <div className="flex flex-col items-center space-y-20 w-full py-10 min-h-screen">
                                 <header className="text-center space-y-6">
                                     <h1 className="text-8xl md:text-[11rem] font-black tracking-tighter mb-0 italic uppercase flex flex-col leading-none">
@@ -188,7 +196,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                     </h1>
                                     <div className="flex items-center justify-center gap-8 text-[11px] uppercase tracking-[0.8em] text-white/30 font-black">
                                         <span className="w-16 h-[1px] bg-white/10" />
-                                        <span>{character.realm} // {character.region.toUpperCase()}</span>
+                                        <span>{realm.toUpperCase()} // {region.toUpperCase()}</span>
                                         <span className="w-16 h-[1px] bg-white/10" />
                                     </div>
                                 </header>
@@ -235,8 +243,9 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                 </div>
                             </div>
 
+                            {/* Right Side: Raider.io Widget */}
                             <div className="w-full flex justify-end px-12 mt-20 lg:mt-0 lg:sticky lg:top-24">
-                                <div className="w-full max-w-[340px] lg:mr-8 border border-white/10 rounded-xl overflow-hidden backdrop-blur-3xl shadow-2xl">
+                                <div className="w-full max-w-[340px] border border-white/10 rounded-xl overflow-hidden backdrop-blur-3xl shadow-2xl">
                                     <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
                                         <span>MYTHIC+ LOGS</span>
                                         <BarChart3 className="w-4 h-4 text-white/20" />
@@ -245,7 +254,6 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                         <iframe
                                             src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
                                             style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
-                                            className="filter brightness-110"
                                         />
                                     </div>
                                 </div>
@@ -255,17 +263,18 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     )}
 
                     <footer className="mt-64 pb-20 text-center opacity-10">
-                        <p className="text-[10px] tracking-[1.2em] font-black uppercase">Protocol Azure-Sync-06</p>
+                        <p className="text-[10px] tracking-[1.2em] font-black uppercase">Protocol Azure // End Observation</p>
                     </footer>
                 </div>
             </div>
         );
     } catch (err) {
+        console.error(err);
         return (
             <div className="min-h-screen flex items-center justify-center text-center p-10 bg-black text-white px-20">
                 <div>
-                    <h1 className="text-4xl font-black italic uppercase text-white/20 tracking-tighter">Erreur de Connexion</h1>
-                    <Link href="/" className="mt-12 inline-block px-10 py-5 bg-white text-black font-black tracking-widest uppercase italic">Retourner au Hub</Link>
+                    <h1 className="text-4xl font-black italic uppercase text-white/20 tracking-tighter">Erreur Critique de Sync</h1>
+                    <Link href="/" className="mt-12 inline-block px-10 py-5 bg-white text-black font-black tracking-widest uppercase italic">Reconnecter au Hub</Link>
                 </div>
             </div>
         );
