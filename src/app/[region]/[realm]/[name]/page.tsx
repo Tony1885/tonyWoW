@@ -120,7 +120,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
         }
 
         return (
-            <div className="relative min-h-screen w-full flex flex-col items-center overflow-x-hidden">
+            <div className="relative min-h-screen w-full flex flex-col items-center overflow-x-hidden pt-12">
                 {/* Dynamic Background Glow Overlay */}
                 <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
                     <div
@@ -129,18 +129,18 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     />
                 </div>
 
-                {/* Character Skin Background Render (Subtle) */}
+                {/* Character Skin Background Render (More visible) */}
                 {characterRender && (
-                    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center pointer-events-none">
+                    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-30">
                         <img
                             src={characterRender}
                             alt=""
-                            className="h-[120vh] w-auto object-contain opacity-10 grayscale scale-110 translate-x-[-20%]"
+                            className="h-[110vh] w-auto object-contain scale-110 translate-x-[-15%] blur-[2px]"
                         />
                     </div>
                 )}
 
-                <div className="relative z-10 w-full pt-12 pb-20 px-6 max-w-[1800px]">
+                <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1800px]">
                     <Link
                         href="/"
                         className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-white/40 hover:text-white transition-all mb-12 group ml-4"
@@ -159,17 +159,16 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     ) : (
                         <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,600px)_1fr] gap-4 lg:gap-0 items-start">
 
-                            {/* Left Column (Empty to maintain center) */}
-                            <div className="hidden lg:block shrink-0 px-8">
-                                {/* We can put a smaller version of the render here if we want */}
-                                <div className="sticky top-24 opacity-40">
+                            {/* Left Column: Side Skin (Pushed further left) */}
+                            <div className="hidden lg:flex justify-start px-8 shrink-0">
+                                <div className="sticky top-24">
                                     <div className="relative group">
                                         <img
                                             src={characterRender}
                                             alt={character.name}
-                                            className="w-full max-w-[250px] object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+                                            className="w-full max-w-[350px] object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]"
                                         />
-                                        <div className="absolute -bottom-4 left-0 w-full h-8 bg-black/40 blur-xl rounded-full scale-50" />
+                                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-48 h-12 bg-black/60 blur-2xl rounded-full scale-75" />
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +177,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             <div className="flex flex-col items-center space-y-12 w-full">
                                 <header className="text-center">
                                     <h1 className="text-7xl md:text-8xl font-black tracking-tighter mb-2 italic uppercase flex flex-col leading-none">
-                                        <span className="text-white drop-shadow-2xl">{character.name}</span>
+                                        <span className="text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">{character.name}</span>
                                         <span className="text-white/10 not-italic text-4xl tracking-[0.2em] -mt-1">HUB</span>
                                     </h1>
                                     <div className="mt-4 flex items-center justify-center gap-4 text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">
@@ -192,7 +191,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                     <CharacterCard character={character} />
                                 </div>
 
-                                {/* Compact Links: Icons Only */}
+                                {/* Compact Links: Icons Only (NO GRAYSCALE) */}
                                 <div className="w-full space-y-12 pt-4 max-w-sm">
                                     {categories.map((cat, i) => (
                                         <div key={i} className="flex flex-col items-center space-y-5">
@@ -220,7 +219,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                                                 alt={link.name}
                                                                 className={cn(
                                                                     "w-full h-full object-contain transition-all",
-                                                                    link.icon ? "rounded-sm" : "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100"
+                                                                    link.icon ? "rounded-sm" : ""
                                                                 )}
                                                             />
                                                         </div>
@@ -232,18 +231,18 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                 </div>
                             </div>
 
-                            {/* Right Column: Raider.io Dungeons Widget - Far Right */}
-                            <div className="w-full max-w-sm lg:w-full flex justify-end px-4 lg:px-8 mt-12 lg:mt-0">
-                                <div className="w-full max-w-[340px] sticky top-12 space-y-6">
+                            {/* Right Column: Raider.io Dungeons Widget - Pushed far right (NO GRAYSCALE) */}
+                            <div className="w-full flex justify-end px-4 lg:px-8 mt-12 lg:mt-0">
+                                <div className="w-full max-w-[360px] lg:fixed lg:right-10 lg:top-24 space-y-6">
                                     <div className="glass border border-white/10 rounded-sm overflow-hidden p-1 backdrop-blur-md shadow-2xl">
                                         <div className="p-3 bg-white/5 border-b border-white/10 text-[9px] uppercase tracking-[0.5em] text-white/40 font-bold mb-1 flex items-center justify-between">
                                             <span>Derniers Donjons</span>
                                             <BarChart3 className="w-3 h-3 opacity-30" />
                                         </div>
                                         <iframe
-                                            src={`https://raider.io/widgets/dungeons?date=all&characterId=${name === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
+                                            src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
                                             style={{ border: 'none', width: '100%', height: '580px' }}
-                                            className="grayscale opacity-90 hover:grayscale-0 transition-all duration-700"
+                                            className="transition-all duration-700"
                                         />
                                     </div>
 

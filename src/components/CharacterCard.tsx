@@ -71,7 +71,7 @@ export default function CharacterCard({ character }: CharacterCardProps) {
                                     <img
                                         src={character.thumbnail_url}
                                         alt={character.name}
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-125 translate-y-2"
+                                        className="w-full h-full object-cover transition-all duration-700 scale-125 translate-y-2"
                                     />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-white/5">
