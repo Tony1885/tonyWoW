@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ArrowUpRight, Github, Twitter, Linkedin } from "lucide-react";
+import WorkSection from "@/components/WorkSection";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,6 +95,8 @@ export default function Home() {
           <span>Smooth Scrolling</span>
         </div>
       </div>
+
+      <WorkSection />
     </div>
   );
 }
