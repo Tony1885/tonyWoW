@@ -35,19 +35,6 @@ export default function CustomCursor() {
     return (
         <>
             <motion.div
-                className="fixed top-0 left-0 w-8 h-8 rounded-full border border-white pointer-events-none z-[10000] mix-blend-difference"
-                style={{
-                    translateX: cursorXSpring,
-                    translateY: cursorYSpring,
-                    x: "-50%",
-                    y: "-50%",
-                }}
-                animate={{
-                    opacity: isVisible ? 1 : 0,
-                    scale: isVisible ? 1 : 0,
-                }}
-            />
-            <motion.div
                 className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[10000]"
                 style={{
                     translateX: cursorXSpring,
