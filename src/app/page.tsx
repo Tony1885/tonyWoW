@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ArrowUpRight, Github, Twitter, Linkedin } from "lucide-react";
 import WorkSection from "@/components/WorkSection";
+import Link from "next/link";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -70,8 +71,12 @@ export default function Home() {
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </button>
 
-          <button className="px-8 py-4 border border-white/10 rounded-full hover:border-white/40 transition-colors">
-            Contactez-nous
+          <Link href="/dashboard" className="px-8 py-4 border border-white/10 rounded-full hover:border-white/40 transition-colors uppercase text-sm tracking-widest font-medium">
+            Mon Dashboard WoW
+          </Link>
+
+          <button className="px-8 py-4 border border-white/10 rounded-sm opacity-50 hover:opacity-100 transition-colors uppercase text-[10px] tracking-widest">
+            Contact
           </button>
         </div>
       </section>
