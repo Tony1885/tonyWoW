@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, Shield, Swords, User, Compass, HelpCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { ChevronRight, Shield, Swords } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const CHARACTERS = [
   {
@@ -12,22 +12,22 @@ const CHARACTERS = [
     realm: "ysondre",
     region: "eu",
     level: 80,
-    class: "Moine",
+    class: "Monk",
     race: "Pandaren",
     faction: "Horde",
     spec: "Maître Brasseur",
-    theme: "monk"
+    color: "#00FF96"
   },
   {
     name: "Mamènne",
     realm: "ysondre",
     region: "eu",
     level: 80,
-    class: "Paladin", // Assumption for Alliance feel
+    class: "Paladin",
     race: "Humain",
     faction: "Alliance",
     spec: "Vindicte",
-    theme: "alliance"
+    color: "#F58CBA"
   }
 ];
 
@@ -41,143 +41,156 @@ export default function CharacterSelectPage() {
   };
 
   return (
-    <div className="relative h-screen w-full bg-[#050505] overflow-hidden flex flex-col items-center justify-between py-12 px-6 font-sans">
-      {/* Background Ambience */}
+    <div className="relative h-screen w-full bg-[#020202] overflow-hidden flex items-center justify-center p-6 font-sans">
+
+      {/* Dynamic Background Glow */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={selected.theme}
+          key={selected.name}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.15 }}
+          animate={{ opacity: 0.1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1 }}
           className="absolute inset-0 pointer-events-none"
-        >
-          {selected.theme === "monk" ? (
-            <div className="absolute inset-0 bg-gradient-to-tr from-green-900/40 via-transparent to-transparent" />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/40 via-transparent to-transparent" />
-          )}
-        </motion.div>
+          style={{ backgroundColor: selected.color }}
+        />
       </AnimatePresence>
 
-      {/* Top Header */}
-      <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="relative z-20 text-center"
-      >
-        <h1 className="text-xl tracking-[0.5em] text-white/50 uppercase font-light">
-          Sélection du Personnage
-        </h1>
-        <div className="h-[1px] w-32 bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto mt-4" />
-      </motion.div>
+      <div className="relative z-10 w-full max-w-6xl h-full max-h-[800px] flex flex-col items-center justify-between">
 
-      {/* Center Character Display */}
-      <div className="relative flex-1 w-full flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selected.name}
-            initial={{ scale: 0.95, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 1.05, opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="text-center"
-          >
-            <div className={`text-[120px] md:text-[180px] font-bold tracking-tighter opacity-[0.03] select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap`}>
-              {selected.name.toUpperCase()}
-            </div>
+        {/* Top Branding */}
+        <header className="text-center pt-8">
+          <h1 className="text-sm tracking-[1em] text-white/30 uppercase font-bold">
+            Sélection du Personnage
+          </h1>
+          <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-white/10 to-transparent mx-auto mt-4" />
+        </header>
 
+        {/* Center: Selected Character View */}
+        <div className="flex-1 flex flex-col items-center justify-center -translate-y-10">
+          <AnimatePresence mode="wait">
             <motion.div
-              className="relative z-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+              key={selected.name}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center"
             >
-              <div className={`mb-4 inline-block px-4 py-1 border rounded-sm text-[10px] tracking-[0.3em] uppercase ${selected.faction === "Alliance" ? "border-blue-500/30 text-blue-400 bg-blue-500/5" : "border-red-500/30 text-red-500 bg-red-500/5"}`}>
-                {selected.faction}
+              <div className="mb-6 inline-flex items-center gap-3 px-4 py-1.5 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
+                <span className={cn(
+                  "w-2 h-2 rounded-full animate-pulse",
+                  selected.faction === "Alliance" ? "bg-blue-500 shadow-[0_0_8px_#3b82f6]" : "bg-red-600 shadow-[0_0_8px_#dc2626]"
+                )} />
+                <span className="text-[10px] tracking-[0.4em] uppercase font-black text-white/60">
+                  {selected.faction} • {selected.realm}
+                </span>
               </div>
-              <h2 className="text-7xl md:text-8xl font-black tracking-tighter text-white mb-2 italic">
-                {selected.name.toUpperCase()}
+
+              <h2 className="text-8xl md:text-[120px] font-black tracking-tighter text-white mb-4 italic uppercase leading-[0.8]">
+                {selected.name}
               </h2>
-              <div className="flex items-center justify-center gap-4 text-white/40 text-sm uppercase tracking-[0.2em] font-light">
-                <span>Niveau {selected.level}</span>
-                <span className="w-1 h-1 bg-white/20 rounded-full" />
-                <span>{selected.spec} {selected.class}</span>
+
+              <div className="flex items-center justify-center gap-6 text-base uppercase tracking-[0.3em] font-light text-white/40">
+                <span className="text-white/20">Niveau {selected.level}</span>
+                <div className="w-1.5 h-1.5 bg-white/10 rounded-full" />
+                <span style={{ color: selected.color }} className="font-bold">{selected.spec} {selected.class}</span>
               </div>
             </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Main UI Overlay */}
-      <div className="relative z-30 w-full max-w-7xl flex flex-col md:flex-row items-end justify-between gap-12">
-
-        {/* Statistics or Realm Info */}
-        <div className="w-full md:w-64 space-y-4 hidden md:block">
-          <div className="glass border border-white/5 p-4 rounded-sm">
-            <p className="text-[10px] tracking-widest text-white/20 uppercase mb-2">Royaume</p>
-            <p className="text-white uppercase font-bold tracking-wider">{selected.realm}</p>
-          </div>
-          <p className="text-[9px] text-white/10 uppercase tracking-[0.2em] leading-relaxed">
-            "Que le vent caresse toujours votre dos, et que vos pas soient légers."
-          </p>
+          </AnimatePresence>
         </div>
 
-        {/* Enter World Button */}
-        <div className="flex-1 flex flex-col items-center gap-4">
-          <button
-            onClick={handleEnterWorld}
-            className="group relative px-20 py-5 bg-[#C41E3A]/90 hover:bg-[#C41E3A] text-white transition-all duration-300 border border-white/10 overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            <span className="relative z-10 text-lg font-bold tracking-[0.3em] uppercase italic">
-              Entrer dans le Hub
-            </span>
-          </button>
-          <div className="flex gap-10 text-[10px] text-white/20 tracking-[0.3em] uppercase">
-            <button className="hover:text-white transition-colors">Menu</button>
-            <button className="hover:text-white transition-colors">Credits</button>
-            <button className="hover:text-white transition-colors">Quitter</button>
-          </div>
-        </div>
+        {/* Bottom Interface: Centered & Balanced */}
+        <div className="w-full flex flex-col md:flex-row items-center justify-center gap-12 pb-12">
 
-        {/* Character List Area */}
-        <div className="w-full md:w-72 glass border border-white/10 rounded-sm overflow-hidden flex flex-col">
-          <div className="p-3 bg-white/5 border-b border-white/10 text-[10px] tracking-[0.3em] uppercase text-white/40">
-            Liste des personnages
+          {/* Enter World Hero Button */}
+          <div className="order-1 md:order-2">
+            <button
+              onClick={handleEnterWorld}
+              className="group relative px-24 py-7 bg-white text-black hover:bg-white/90 transition-all duration-300 rounded-sm overflow-hidden"
+            >
+              <span className="relative z-10 text-xl font-black tracking-[0.4em] uppercase italic">
+                ENTRER DANS LE HUB
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            </button>
+            <div className="flex justify-center gap-10 mt-6 text-[10px] text-white/20 tracking-[0.4em] uppercase">
+              <button className="hover:text-white transition-colors">Options</button>
+              <button className="hover:text-white transition-colors">Crédits</button>
+              <button className="hover:text-white transition-colors">Quitter</button>
+            </div>
           </div>
-          <div className="max-h-[300px] overflow-y-auto scrollbar-hide">
-            {CHARACTERS.map((char, idx) => (
-              <button
-                key={char.name}
-                onClick={() => setSelectedIdx(idx)}
-                className={`w-full p-4 flex items-center justify-between border-b border-white/5 transition-all group ${selectedIdx === idx ? "bg-white/10" : "hover:bg-white/5"}`}
-              >
-                <div className="text-left">
-                  <p className={`text-sm font-bold tracking-tight ${selectedIdx === idx ? "text-white" : "text-white/60 group-hover:text-white"}`}>
-                    {char.name}
-                  </p>
-                  <p className="text-[9px] uppercase tracking-widest text-white/20">
-                    {char.class} Niv. {char.level}
-                  </p>
-                </div>
-                {selectedIdx === idx && (
-                  <div className="w-1 h-8 bg-[#C41E3A] rounded-full" />
-                )}
-              </button>
-            ))}
+
+          {/* Character List: Now Floating or Positioned firmly */}
+          <div className="order-2 md:order-3 w-64 glass-morphism border border-white/10 rounded-sm overflow-hidden flex flex-col shadow-2xl">
+            <div className="p-4 bg-white/5 border-b border-white/10">
+              <p className="text-[9px] tracking-[0.4em] uppercase text-white/40 font-bold">Aventuriers</p>
+            </div>
+            <div className="max-h-[220px] overflow-y-scroll scrollbar-hide">
+              {CHARACTERS.map((char, idx) => (
+                <button
+                  key={char.name}
+                  onClick={() => setSelectedIdx(idx)}
+                  className={cn(
+                    "w-full p-5 text-left transition-all border-b border-white/5 group relative",
+                    selectedIdx === idx ? "bg-white/10" : "hover:bg-white/5"
+                  )}
+                >
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div>
+                      <p className={cn(
+                        "text-base font-black tracking-tight uppercase italic transition-colors",
+                        selectedIdx === idx ? "text-white" : "text-white/40 group-hover:text-white/60"
+                      )}>
+                        {char.name}
+                      </p>
+                      <p className="text-[8px] uppercase tracking-widest text-white/20 font-bold">
+                        {char.class} • NIV. {char.level}
+                      </p>
+                    </div>
+                    {selectedIdx === idx && (
+                      <ChevronRight className="w-4 h-4 text-white" />
+                    )}
+                  </div>
+                  {selectedIdx === idx && (
+                    <motion.div
+                      layoutId="active-bg"
+                      className="absolute inset-0 border-l-4"
+                      style={{ borderColor: char.color }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+            <button className="p-4 w-full text-[9px] tracking-[0.3em] uppercase text-white/20 hover:text-white transition-colors bg-black/40 border-t border-white/5 font-bold">
+              + Créer un nouveau
+            </button>
           </div>
-          <button className="p-4 w-full text-[10px] tracking-widest uppercase text-white/20 hover:text-white transition-colors border-t border-white/5 bg-black/20">
-            Créer un personnage
-          </button>
+
+          {/* Empty space/Stat for balance */}
+          <div className="hidden md:block w-64 order-1">
+            <div className="glass border border-white/5 p-6 rounded-sm">
+              <p className="text-[9px] tracking-[0.4em] text-white/20 uppercase mb-3 font-bold">Région</p>
+              <p className="text-white uppercase font-black tracking-widest text-lg italic">EUROPE</p>
+              <div className="h-[1px] w-full bg-white/5 my-4" />
+              <p className="text-white/30 text-[9px] uppercase tracking-widest leading-loose">
+                Sélectionnez un personnage pour accéder à ses outils de suivi.
+              </p>
+            </div>
+          </div>
+
         </div>
 
       </div>
 
-      {/* Bottom Floating Info */}
-      <div className="absolute bottom-6 left-6 text-[9px] text-white/5 uppercase tracking-[0.4em] pointer-events-none">
-        Build v1.0.4-WoN | Antigravity Engine
+      {/* Floating Info */}
+      <div className="absolute top-10 left-10 pointer-events-none">
+        <Shield className="w-8 h-8 text-white/5" />
       </div>
+      <div className="absolute bottom-10 right-10 pointer-events-none">
+        <Swords className="w-8 h-8 text-white/5" />
+      </div>
+
     </div>
   );
 }

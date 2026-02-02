@@ -9,7 +9,27 @@ interface CharacterCardProps {
     character: WowCharacter;
 }
 
+const CLASS_COLORS: Record<string, string> = {
+    "monk": "#00FF96",
+    "paladin": "#F58CBA",
+    "death knight": "#C41E3A",
+    "warrior": "#C79C6E",
+    "hunter": "#ABD473",
+    "rogue": "#FFF569",
+    "priest": "#FFFFFF",
+    "shaman": "#0070DE",
+    "mage": "#3FC7EB",
+    "warlock": "#8787ED",
+    "druid": "#FF7D0A",
+    "demon hunter": "#A330C9",
+    "evoker": "#33937F",
+};
+
 export default function CharacterCard({ character }: CharacterCardProps) {
+    const classColor = CLASS_COLORS[character.class.toLowerCase()] || "#ffffff";
+    const isAlliance = character.faction?.toLowerCase() === "alliance";
+    const factionColor = isAlliance ? "#0068FF" : "#8C1616";
+
     const getRoleIcon = (role: string) => {
         switch (role.toLowerCase()) {
             case "dps": return <Swords className="w-4 h-4" />;
@@ -20,93 +40,104 @@ export default function CharacterCard({ character }: CharacterCardProps) {
     };
 
     const score = character.mythic_plus_scores_by_season?.[0]?.scores.all || 0;
-    const isAlliance = character.faction?.toLowerCase() === "alliance";
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full relative glass-morphism overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-700 rounded-sm"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-full relative glass-morphism overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-700 rounded-lg group shadow-2xl"
         >
-            {/* Class/Faction Background Decor */}
-            <div className={cn(
-                "absolute top-0 left-0 w-full h-1 opacity-40",
-                isAlliance ? "bg-blue-600" : "bg-red-600"
-            )} />
+            {/* Background Glows */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div
+                    className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-[80px] opacity-20"
+                    style={{ backgroundColor: classColor }}
+                />
+                <div
+                    className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full blur-[80px] opacity-20"
+                    style={{ backgroundColor: factionColor }}
+                />
+            </div>
 
-            <div className="p-8">
+            <div className="p-10 relative z-10">
                 {/* Header: Centered */}
-                <div className="flex flex-col items-center text-center mb-8">
-                    <div className="relative mb-4">
-                        <div className="w-24 h-24 rounded-full glass border border-white/20 overflow-hidden">
-                            <img
-                                src={character.thumbnail_url}
-                                alt={character.name}
-                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110"
-                            />
+                <div className="flex flex-col items-center text-center mb-10">
+                    <div className="relative mb-6">
+                        <div className="w-28 h-28 rounded-full bg-gradient-to-b from-white/10 to-transparent p-1">
+                            <div className="w-full h-full rounded-full glass border border-white/20 overflow-hidden relative">
+                                <img
+                                    src={character.thumbnail_url}
+                                    alt={character.name}
+                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-125 translate-y-2"
+                                />
+                            </div>
                         </div>
                         <div className={cn(
-                            "absolute bottom-0 right-0 w-6 h-6 rounded-full flex items-center justify-center border border-white/20 shadow-lg",
-                            isAlliance ? "bg-blue-900" : "bg-red-900"
-                        )}>
-                            {isAlliance ? <Shield className="w-3 h-3" /> : <Swords className="w-3 h-3" />}
+                            "absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center border border-white/20 shadow-xl",
+                        )} style={{ backgroundColor: factionColor }}>
+                            {isAlliance ? <Shield className="w-4 h-4 text-white" /> : <Swords className="w-4 h-4 text-white" />}
                         </div>
                     </div>
 
-                    <h3 className="text-4xl font-black tracking-tighter text-white mb-2 uppercase italic leading-none">
+                    <h3 className="text-5xl font-black tracking-tighter text-white mb-2 uppercase italic leading-none">
                         {character.name}
                     </h3>
 
-                    <div className="flex items-center justify-center gap-2 text-white/40 text-[10px] uppercase tracking-[0.3em] font-medium bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                    <div
+                        className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/5 bg-white/5 text-[11px] uppercase tracking-[0.3em] font-black"
+                        style={{ color: classColor }}
+                    >
                         <span>{character.active_spec_name}</span>
-                        <span className="w-1 h-1 bg-white/20 rounded-full" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
                         <span>{character.class}</span>
                     </div>
                 </div>
 
-                {/* Stats Grid: Centered & Legible */}
-                <div className="grid grid-cols-2 gap-3 mb-8">
-                    <div className="p-5 rounded-sm bg-black/40 border border-white/5 text-center">
-                        <p className="text-[9px] uppercase tracking-[0.3em] text-white/20 mb-2 font-bold">Item Level</p>
-                        <p className="text-3xl font-black tracking-tighter text-white">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-4 mb-10">
+                    <div className="p-6 rounded-md bg-white/5 border border-white/5 hover:bg-white/10 transition-colors text-center shadow-inner">
+                        <p className="text-[10px] uppercase tracking-[0.4em] text-white/30 mb-2 font-bold">iLevel</p>
+                        <p className="text-4xl font-black tracking-tighter text-white">
                             {character.gear?.item_level_equipped}
                         </p>
-                        <p className="text-[9px] text-white/10 uppercase tracking-widest mt-1">
-                            Total: {character.gear?.item_level_total}
-                        </p>
+                        <div className="w-8 h-[1px] bg-white/10 mx-auto mt-2" />
                     </div>
-                    <div className="p-5 rounded-sm bg-black/40 border border-white/5 text-center">
-                        <p className="text-[9px] uppercase tracking-[0.3em] text-white/20 mb-2 font-bold">M+ Score</p>
+                    <div className="p-6 rounded-md bg-white/5 border border-white/5 hover:bg-white/10 transition-colors text-center shadow-inner">
+                        <p className="text-[10px] uppercase tracking-[0.4em] text-white/30 mb-2 font-bold">M+ Rank</p>
                         <p className={cn(
-                            "text-3xl font-black tracking-tighter",
+                            "text-4xl font-black tracking-tighter",
                             score > 2500 ? "text-[#ff8000]" : score > 2000 ? "text-[#a335ee]" : "text-[#0070dd]"
                         )}>
                             {Math.round(score)}
                         </p>
-                        <div className="flex items-center justify-center gap-1.5 text-[9px] text-white/20 uppercase tracking-widest mt-1">
+                        <div
+                            className="flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest mt-2 font-bold"
+                            style={{ color: classColor }}
+                        >
                             {getRoleIcon(character.active_spec_role)}
                             {character.active_spec_role}
                         </div>
                     </div>
                 </div>
 
-                {/* Footer Link */}
-                <div className="flex justify-center">
-                    <a
-                        href={character.profile_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-white/20 hover:text-white transition-all group/link px-6 py-3 border border-white/5 hover:border-white/10 rounded-full"
-                    >
-                        <span>Détails complets</span>
-                        <ExternalLink className="w-3 h-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                    </a>
-                </div>
+                {/* Main Link */}
+                <a
+                    href={character.profile_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-4 py-4 bg-white/[0.03] hover:bg-white text-[11px] font-black uppercase tracking-[0.5em] text-white/40 hover:text-black border border-white/10 rounded-sm transition-all duration-300"
+                >
+                    VOIR SUR RAIDER.IO
+                    <ExternalLink className="w-3 h-3" />
+                </a>
             </div>
 
-            {/* Subtle Realm Tag */}
-            <div className="absolute top-4 right-4 text-[9px] uppercase tracking-[0.3em] text-white/20">
+            {/* Realm Tag */}
+            <div className="absolute top-6 left-6 text-[10px] uppercase tracking-[0.5em] text-white/10 font-black">
                 {character.realm}
+            </div>
+            <div className="absolute bottom-6 right-6 text-[10px] uppercase tracking-[0.5em] text-white/5 font-black">
+                {character.region.toUpperCase()}
             </div>
         </motion.div>
     );
