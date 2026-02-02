@@ -28,32 +28,35 @@ export interface WowCharacter {
 
 export async function getCharacterProfile(region: string, realm: string, name: string): Promise<WowCharacter | null> {
     try {
-        // Safe decoding/encoding to avoid double encoding issues
-        const decodedName = decodeURIComponent(name);
-        const encodedName = encodeURIComponent(decodedName);
-        const encodedRealm = encodeURIComponent(realm);
-        const encodedRegion = encodeURIComponent(region);
+        // Enforce basic strings
+        const r = String(region).toLowerCase();
+        const rl = String(realm).toLowerCase();
+        const n = String(name).toLowerCase();
+
+        // Use a clean URL without manual decoding/encoding if not needed, 
+        // but Raiders.io needs correctly escaped characters.
+        const encodedName = encodeURIComponent(n);
+        const encodedRealm = encodeURIComponent(rl);
+        const encodedRegion = encodeURIComponent(r);
 
         const url = `https://raider.io/api/v1/characters/profile?region=${encodedRegion}&realm=${encodedRealm}&name=${encodedName}&fields=gear,mythic_plus_scores_by_season:current`;
 
         const response = await fetch(url, {
             next: { revalidate: 60 },
-            headers: { 'Accept': 'application/json' }
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'WoW-Dashboard-Agent/1.0'
+            }
         });
 
         if (!response.ok) {
-            console.warn(`Raider.io API status: ${response.status} for ${name}`);
             return null;
         }
 
         const data = await response.json();
-
-        // Final safety check on mandatory data
-        if (!data || !data.name) return null;
-
-        return data;
+        return data && data.name ? data : null;
     } catch (error) {
-        console.error("Error fetching WoW character:", error);
+        console.error("Critical Profile Fetch Error:", error);
         return null;
     }
 }
