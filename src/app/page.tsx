@@ -15,7 +15,7 @@ const CHARACTERS = [
     race: "Pandaren",
     faction: "Horde",
     spec: "Maître Brasseur",
-    color: "#00FF96",
+    color: "#00FF96", // Monk Green
     render: "https://render.worldofwarcraft.com/eu/character/ysondre/41/176557609-main-raw.png"
   },
   {
@@ -27,7 +27,7 @@ const CHARACTERS = [
     race: "Humain",
     faction: "Alliance",
     spec: "Vindicte",
-    color: "#F58CBA",
+    color: "#F58CBA", // Paladin Pink (The user mentioned Violet/DH, but I will keep this or adapt if they add DH)
     render: "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main-raw.png"
   }
 ];
@@ -98,57 +98,48 @@ export default function CharacterSelectPage() {
 
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-between pb-32 pt-20 px-6">
 
-        <div /> {/* Spacer */}
+        {/* Empty Spacer (Removed Mid Screen Text as requested) */}
+        <div />
+        <div />
 
-        {/* Center Title (Main Visual) */}
-        <div className="w-full max-w-7xl flex flex-col items-center justify-center relative">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selected.name + "-visual"}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
-              transition={{ duration: 0.8 }}
-              className="text-center"
-            >
-              <h2 className="text-[12rem] md:text-[18rem] font-black italic tracking-tighter leading-none text-white/10 uppercase">
-                {selected.name}
-              </h2>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Action Button: Name & Spec as entry link */}
+        {/* Action Button: The main menu to enter */}
         <div className="w-full flex flex-col items-center gap-12 relative z-40">
           <AnimatePresence mode="wait">
             <motion.button
               key={selected.name + "-btn"}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 1.1, y: -30 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               onClick={handleEnterWorld}
-              className="group relative w-full max-w-4xl py-12 bg-white text-black hover:bg-black hover:text-white transition-all duration-500 rounded-sm overflow-hidden border border-white shadow-[0_40px_120px_rgba(0,0,0,1)]"
+              className="group relative w-full max-w-4xl py-12 transition-all duration-700 rounded-xl overflow-hidden shadow-[0_50px_150px_rgba(0,0,0,1)] border-2"
+              style={{
+                backgroundColor: selected.color,
+                borderColor: 'rgba(255,255,255,0.2)',
+                boxShadow: `0 30px 100px -20px ${selected.color}44`
+              }}
             >
               <div className="relative z-10 flex flex-col items-center gap-2">
-                <span className="text-4xl md:text-6xl font-black tracking-[0.4em] uppercase italic">
+                <span className="text-5xl md:text-8xl font-black tracking-[0.2em] uppercase italic text-black drop-shadow-sm">
                   {selected.name}
                 </span>
-                <div className="flex items-center gap-4 text-xs md:text-sm font-black tracking-[1em] uppercase opacity-40 group-hover:opacity-80 transition-opacity mt-2">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: selected.color }} />
+                <div className="flex items-center gap-6 text-sm md:text-lg font-black tracking-[0.8em] uppercase text-black/60 mt-4">
                   <span>{selected.spec}</span>
                 </div>
               </div>
-              <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+
+              {/* Glossy Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-50" />
+              <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
             </motion.button>
           </AnimatePresence>
         </div>
 
       </div>
 
-      {/* Decorations */}
+      {/* Decorative Text */}
       <div className="fixed left-12 top-1/2 -translate-y-1/2 hidden md:block opacity-5 pointer-events-none">
-        <div className="-rotate-90 text-[10px] tracking-[2em] font-black whitespace-nowrap uppercase">CHARACTER SELECTION PROTOCOL</div>
+        <div className="-rotate-90 text-[10px] tracking-[2em] font-black whitespace-nowrap uppercase italic">TARGET ACQUIRED // SYSTEM ONLINE</div>
       </div>
 
     </div>
