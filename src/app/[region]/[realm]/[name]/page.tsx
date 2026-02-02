@@ -42,20 +42,31 @@ const CLASS_COLORS: Record<string, string> = {
     "evoker": "#33937F",
 };
 
-// Updated Character Renders from Blizzard page JSON
 const CHARACTER_RENDERS: Record<string, string> = {
     "moussman": "https://render.worldofwarcraft.com/eu/character/ysondre/41/176557609-main.jpg",
     "mamènne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main.jpg",
     "mamenne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main.jpg"
 };
 
+function safeDecode(val: string) {
+    try {
+        return decodeURIComponent(val);
+    } catch {
+        return val;
+    }
+}
+
 export default async function CharacterHubPage({ params }: PageProps) {
     try {
         const p = await params;
-        const region = p.region.toLowerCase();
-        const realm = p.realm.toLowerCase();
-        const name = p.name.toLowerCase();
-        const decodedName = decodeURIComponent(name).toLowerCase();
+        if (!p) throw new Error("Missing parameters");
+
+        const region = String(p.region || "").toLowerCase();
+        const realm = String(p.realm || "").toLowerCase();
+        const name = String(p.name || "").toLowerCase();
+
+        // Safety check for encoding issues
+        const decodedName = safeDecode(name).toLowerCase();
 
         const character = await getCharacterProfile(region, realm, name);
         const classKey = character?.class?.toLowerCase() || "";
@@ -63,8 +74,6 @@ export default async function CharacterHubPage({ params }: PageProps) {
         const characterRender = CHARACTER_RENDERS[decodedName] || CHARACTER_RENDERS[name];
 
         const encName = encodeURIComponent(name);
-        const encRealm = encodeURIComponent(realm);
-        const encRegion = encodeURIComponent(region);
 
         const categories: { title: string; icon: any; links: WowLink[] }[] = [
             {
@@ -130,14 +139,13 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     />
                 </div>
 
-                {/* Character Skin Background Render (Very large, subtle background overlay) */}
+                {/* Character Skin Background */}
                 {characterRender && (
                     <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center">
                         <img
                             src={characterRender}
                             alt=""
-                            className="h-[130vh] w-auto object-contain scale-110 opacity-10 filter saturate-[1.5] brightness-125 select-none"
-                            style={{ imageRendering: 'auto' }}
+                            className="h-[130vh] w-auto object-contain scale-110 opacity-10 filter saturate-[1.3] brightness-110 select-none"
                         />
                     </div>
                 )}
@@ -155,28 +163,23 @@ export default async function CharacterHubPage({ params }: PageProps) {
                         <div className="text-center py-32 glass border border-white/5 rounded-lg backdrop-blur-3xl max-w-2xl mx-auto mt-20">
                             <ShieldAlert className="w-16 h-16 text-white/20 mx-auto mb-8 animate-pulse" />
                             <h1 className="text-4xl font-black italic mb-4 uppercase text-white/80 tracking-tighter">Entité Introuvable</h1>
-                            <p className="text-white/40 text-[11px] uppercase tracking-[0.5em] mb-12 leading-loose">Impossible de synchroniser le profil de {decodeURIComponent(name)} sur {realm}.</p>
+                            <p className="text-white/40 text-[11px] uppercase tracking-[0.5em] mb-12 leading-loose">Impossible de synchroniser le profil de {decodedName} sur {realm}.</p>
                             <Link href="/" className="inline-block px-12 py-5 bg-white text-black text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
                         </div>
                     ) : (
                         <div className="w-full grid grid-cols-1 lg:grid-cols-[1.2fr_1fr_1.2fr] gap-0 items-start">
 
-                            {/* Left Column: Huge Detailed Side Skin (Always follows scroll) */}
                             <div className="hidden lg:flex justify-start shrink-0 pointer-events-none sticky top-12 left-0 h-[85vh]">
                                 <div className="relative w-full h-full flex flex-col justify-center">
                                     <img
-                                        src={characterRender.replace('-main.jpg', '-inset.jpg')} // Using inset for left side for a tighter view or main
+                                        src={characterRender}
                                         alt={character.name}
-                                        className="h-full w-auto object-contain drop-shadow-[0_0_80px_rgba(255,255,255,0.2)] filter saturate-[1.4] brightness-110 -translate-x-[20%]"
-                                        onError={(e) => {
-                                            (e.target as HTMLImageElement).src = characterRender;
-                                        }}
+                                        className="h-full w-auto object-contain drop-shadow-[0_0_80px_rgba(255,255,255,0.2)] filter saturate-[1.4] brightness-110 -translate-x-[15%]"
                                     />
                                     <div className="absolute bottom-20 left-10 w-64 h-16 bg-black/60 blur-[100px] rounded-full" />
                                 </div>
                             </div>
 
-                            {/* Center Column: Hub Content (Centered) */}
                             <div className="flex flex-col items-center space-y-20 w-full py-10 min-h-screen">
                                 <header className="text-center space-y-6">
                                     <h1 className="text-8xl md:text-[11rem] font-black tracking-tighter mb-0 italic uppercase flex flex-col leading-none">
@@ -194,13 +197,12 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                     <CharacterCard character={character} />
                                 </div>
 
-                                {/* Vivid Logo Grid */}
                                 <div className="w-full space-y-20 pt-12 max-w-sm">
                                     {categories.map((cat, i) => (
                                         <div key={i} className="flex flex-col items-center space-y-10">
-                                            <div className="flex items-center gap-6 w-full">
+                                            <div className="flex items-center gap-6 w-full opacity-60">
                                                 <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                                                <h2 className="text-[10px] uppercase tracking-[0.6em] text-white/80 font-black whitespace-nowrap">
+                                                <h2 className="text-[10px] uppercase tracking-[0.6em] text-white font-black whitespace-nowrap">
                                                     {cat.title}
                                                 </h2>
                                                 <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/20 to-transparent" />
@@ -213,21 +215,17 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                                         href={link.url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        title={link.name}
-                                                        className="group relative glass-morphism p-6 flex items-center justify-center border border-white/10 hover:border-white/50 hover:bg-white/[0.05] hover:scale-125 active:scale-95 transition-all duration-500 backdrop-blur-3xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                                                        className="group relative glass-morphism p-6 flex items-center justify-center border border-white/10 hover:border-white/50 hover:bg-white/[0.05] hover:scale-125 transition-all duration-500 backdrop-blur-3xl rounded-2xl shadow-2xl"
                                                     >
                                                         <div className="w-14 h-14 flex items-center justify-center">
                                                             <img
                                                                 src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
                                                                 alt={link.name}
                                                                 className={cn(
-                                                                    "w-full h-full object-contain transition-all filter brightness-110",
+                                                                    "w-full h-full object-contain filter brightness-110",
                                                                     link.icon ? "rounded-md" : "saturate-150"
                                                                 )}
                                                             />
-                                                        </div>
-                                                        <div className="absolute -bottom-10 opacity-0 group-hover:opacity-100 transition-all duration-300 text-[9px] uppercase tracking-[0.3em] text-white/40 whitespace-nowrap pointer-events-none font-bold translate-y-2 group-hover:translate-y-0">
-                                                            {link.name}
                                                         </div>
                                                     </a>
                                                 ))}
@@ -237,27 +235,18 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                 </div>
                             </div>
 
-                            {/* Right Column: Raider.io Dungeons Widget - Correctly fit */}
                             <div className="w-full flex justify-end px-12 mt-20 lg:mt-0 lg:sticky lg:top-24">
-                                <div className="w-full max-w-[340px] lg:mr-8">
-                                    <div className="glass-morphism border border-white/20 rounded-xl overflow-hidden p-1 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.6)]">
-                                        <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
-                                            <span>MYTHIC+ LOGS</span>
-                                            <BarChart3 className="w-4 h-4 text-white/20" />
-                                        </div>
-                                        <div className="relative w-full h-[540px] overflow-hidden bg-black/20">
-                                            <iframe
-                                                src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
-                                                style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
-                                                className="transition-all duration-700 filter brightness-110 pointer-events-all"
-                                            />
-                                        </div>
+                                <div className="w-full max-w-[340px] lg:mr-8 border border-white/10 rounded-xl overflow-hidden backdrop-blur-3xl shadow-2xl">
+                                    <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
+                                        <span>MYTHIC+ LOGS</span>
+                                        <BarChart3 className="w-4 h-4 text-white/20" />
                                     </div>
-
-                                    <div className="p-6 mt-8 glass border border-white/5 rounded-xl bg-black/40">
-                                        <p className="text-[10px] uppercase tracking-[0.5em] leading-relaxed text-center font-black text-white/20 animate-pulse">
-                                            RETRANSMISSION REAL-TIME
-                                        </p>
+                                    <div className="relative w-full h-[540px] overflow-hidden bg-black/20">
+                                        <iframe
+                                            src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
+                                            style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
+                                            className="filter brightness-110"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -266,17 +255,17 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     )}
 
                     <footer className="mt-64 pb-20 text-center opacity-10">
-                        <p className="text-[10px] tracking-[1.2em] font-black uppercase">Protocol Azure-Sync-06 // Complete Execution</p>
+                        <p className="text-[10px] tracking-[1.2em] font-black uppercase">Protocol Azure-Sync-06</p>
                     </footer>
                 </div>
             </div>
         );
     } catch (err) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-center p-10 bg-black">
-                <div className="glass p-20 border border-white/10 rounded-3xl">
-                    <h1 className="text-4xl font-black uppercase text-white/10 italic">Lien Perdu avec Azeroth</h1>
-                    <Link href="/" className="mt-10 inline-block px-10 py-5 bg-white text-black text-[11px] tracking-[0.5em] font-black uppercase hover:bg-white/80 transition-all rounded-sm italic">Reconnecter</Link>
+            <div className="min-h-screen flex items-center justify-center text-center p-10 bg-black text-white px-20">
+                <div>
+                    <h1 className="text-4xl font-black italic uppercase text-white/20 tracking-tighter">Erreur de Connexion</h1>
+                    <Link href="/" className="mt-12 inline-block px-10 py-5 bg-white text-black font-black tracking-widest uppercase italic">Retourner au Hub</Link>
                 </div>
             </div>
         );
