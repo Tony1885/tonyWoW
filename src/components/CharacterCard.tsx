@@ -26,7 +26,7 @@ const CLASS_COLORS: Record<string, string> = {
 };
 
 export default function CharacterCard({ character }: CharacterCardProps) {
-    const classColor = CLASS_COLORS[character.class.toLowerCase()] || "#ffffff";
+    const classColor = CLASS_COLORS[character.class?.toLowerCase() || ""] || "#ffffff";
     const isAlliance = character.faction?.toLowerCase() === "alliance";
     const factionColor = isAlliance ? "#0068FF" : "#8C1616";
 

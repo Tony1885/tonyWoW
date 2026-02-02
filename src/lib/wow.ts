@@ -28,14 +28,24 @@ export interface WowCharacter {
 
 export async function getCharacterProfile(region: string, realm: string, name: string): Promise<WowCharacter | null> {
     try {
-        const url = `https://raider.io/api/v1/characters/profile?region=${region}&realm=${realm}&name=${name}&fields=gear,mythic_plus_scores_by_season:current`;
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const encodedRegion = encodeURIComponent(region);
+        const encodedRealm = encodeURIComponent(realm);
+        const encodedName = encodeURIComponent(name);
+
+        const url = `https://raider.io/api/v1/characters/profile?region=${encodedRegion}&realm=${encodedRealm}&name=${encodedName}&fields=gear,mythic_plus_scores_by_season:current`;
+
+        const response = await fetch(url, {
+            next: { revalidate: 60 },
+            headers: { 'Accept': 'application/json' }
+        });
 
         if (!response.ok) {
+            console.error(`Raider.io API error: ${response.status} ${response.statusText}`);
             return null;
         }
 
-        return await response.json();
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.error("Error fetching WoW character:", error);
         return null;
