@@ -124,86 +124,84 @@ export default async function CharacterHubPage({ params }: PageProps) {
                 {/* Dynamic Background Glow Overlay */}
                 <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
                     <div
-                        className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[150px] opacity-10 transition-colors duration-1000"
+                        className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[150px] opacity-20 transition-colors duration-1000"
                         style={{ backgroundColor: classColor }}
                     />
                 </div>
 
-                {/* Character Skin Background Render (More visible) */}
+                {/* Character Skin Background Render (High Visibility Overlay) */}
                 {characterRender && (
-                    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-30">
+                    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center">
                         <img
                             src={characterRender}
                             alt=""
-                            className="h-[110vh] w-auto object-contain scale-110 translate-x-[-15%] blur-[2px]"
+                            className="h-[120vh] w-auto object-contain scale-110 opacity-15 filter saturate-[1.5] brightness-125"
                         />
                     </div>
                 )}
 
-                <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1800px]">
+                <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1900px]">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-white/40 hover:text-white transition-all mb-12 group ml-4"
+                        className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.5em] text-white/50 hover:text-white transition-all mb-12 group ml-10 font-black"
                     >
-                        <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                        Retour à la sélection
+                        <ChevronLeft className="w-5 h-5 group-hover:-translate-x-2 transition-transform" />
+                        Retour au Menu
                     </Link>
 
                     {!character ? (
-                        <div className="text-center py-32 glass border border-white/5 rounded-sm backdrop-blur-sm max-w-2xl mx-auto mt-20">
-                            <ShieldAlert className="w-12 h-12 text-white/10 mx-auto mb-6" />
-                            <h1 className="text-3xl font-black italic mb-2 uppercase text-white/60">Azeroth ne répond pas</h1>
-                            <p className="text-white/30 text-[10px] uppercase tracking-[0.4em] mb-10">Impossible de trouver {decodeURIComponent(name)} @ {realm}</p>
-                            <Link href="/" className="inline-block px-10 py-4 bg-white text-black text-[10px] font-black tracking-[0.3em] hover:bg-white/80 transition-all">REESSAYER</Link>
+                        <div className="text-center py-32 glass border border-white/5 rounded-lg backdrop-blur-3xl max-w-2xl mx-auto mt-20">
+                            <ShieldAlert className="w-16 h-16 text-white/20 mx-auto mb-8 animate-pulse" />
+                            <h1 className="text-4xl font-black italic mb-4 uppercase text-white/80 tracking-tighter">Entité Introuvable</h1>
+                            <p className="text-white/40 text-[11px] uppercase tracking-[0.5em] mb-12 leading-loose">Impossible de synchroniser le profil de {decodeURIComponent(name)} sur {realm}.</p>
+                            <Link href="/" className="inline-block px-12 py-5 bg-white text-black text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
                         </div>
                     ) : (
-                        <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_minmax(auto,600px)_1fr] gap-4 lg:gap-0 items-start">
+                        <div className="w-full grid grid-cols-1 lg:grid-cols-[1.2fr_1fr_1.2fr] gap-0 items-start">
 
-                            {/* Left Column: Side Skin (Pushed further left) */}
-                            <div className="hidden lg:flex justify-start px-8 shrink-0">
-                                <div className="sticky top-24">
-                                    <div className="relative group">
-                                        <img
-                                            src={characterRender}
-                                            alt={character.name}
-                                            className="w-full max-w-[350px] object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]"
-                                        />
-                                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-48 h-12 bg-black/60 blur-2xl rounded-full scale-75" />
-                                    </div>
+                            {/* Left Column: Massive Side Skin */}
+                            <div className="hidden lg:flex justify-start shrink-0 pointer-events-none sticky top-12 left-0 h-[80vh]">
+                                <div className="relative w-full h-full flex flex-col justify-center">
+                                    <img
+                                        src={characterRender}
+                                        alt={character.name}
+                                        className="h-full w-auto object-contain drop-shadow-[0_0_80px_rgba(255,255,255,0.2)] filter saturate-[1.4] brightness-110 -translate-x-[15%]"
+                                    />
+                                    <div className="absolute bottom-20 left-10 w-64 h-16 bg-black/60 blur-[100px] rounded-full" />
                                 </div>
                             </div>
 
-                            {/* Center Column: Hub Content (Centered) */}
-                            <div className="flex flex-col items-center space-y-12 w-full">
-                                <header className="text-center">
-                                    <h1 className="text-7xl md:text-8xl font-black tracking-tighter mb-2 italic uppercase flex flex-col leading-none">
-                                        <span className="text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">{character.name}</span>
-                                        <span className="text-white/10 not-italic text-4xl tracking-[0.2em] -mt-1">HUB</span>
+                            {/* Center Column: Hub Content (PERFECTLY CENTERED) */}
+                            <div className="flex flex-col items-center space-y-16 w-full py-10">
+                                <header className="text-center space-y-4">
+                                    <h1 className="text-8xl md:text-[10rem] font-black tracking-tighter mb-0 italic uppercase flex flex-col leading-none">
+                                        <span className="text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]">{character.name}</span>
+                                        <span className="text-white/10 not-italic text-5xl tracking-[0.3em] -mt-2">COMMAND HUB</span>
                                     </h1>
-                                    <div className="mt-4 flex items-center justify-center gap-4 text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">
-                                        <span>{character.realm}</span>
-                                        <span className="w-1 h-1 bg-white/10 rounded-full" />
-                                        <span>{character.region.toUpperCase()}</span>
+                                    <div className="flex items-center justify-center gap-6 text-[10px] uppercase tracking-[0.6em] text-white/40 font-black">
+                                        <span className="w-12 h-[1px] bg-white/10" />
+                                        <span>{character.realm} // {character.region.toUpperCase()}</span>
+                                        <span className="w-12 h-[1px] bg-white/10" />
                                     </div>
                                 </header>
 
-                                <div className="w-full shadow-2xl shadow-black/80 max-w-lg">
+                                <div className="w-full shadow-[0_40px_100px_rgba(0,0,0,0.8)] max-w-lg border border-white/5 rounded-xl overflow-hidden">
                                     <CharacterCard character={character} />
                                 </div>
 
-                                {/* Compact Links: Icons Only (NO GRAYSCALE) */}
-                                <div className="w-full space-y-12 pt-4 max-w-sm">
+                                {/* Compact Links: Vivid Icons Only */}
+                                <div className="w-full space-y-16 pt-8 max-w-sm">
                                     {categories.map((cat, i) => (
-                                        <div key={i} className="flex flex-col items-center space-y-5">
-                                            <div className="flex items-center gap-4 w-full">
-                                                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                                                <h2 className="text-[9px] uppercase tracking-[0.5em] text-white/40 font-bold whitespace-nowrap">
+                                        <div key={i} className="flex flex-col items-center space-y-8">
+                                            <div className="flex items-center gap-6 w-full opacity-60">
+                                                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                                                <h2 className="text-[10px] uppercase tracking-[0.6em] text-white font-black whitespace-nowrap">
                                                     {cat.title}
                                                 </h2>
-                                                <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/10 to-transparent" />
+                                                <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/20 to-transparent" />
                                             </div>
 
-                                            <div className="flex flex-wrap justify-center gap-5">
+                                            <div className="flex flex-wrap justify-center gap-6">
                                                 {cat.links.map((link, li) => (
                                                     <a
                                                         key={li}
@@ -211,17 +209,20 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         title={link.name}
-                                                        className="group relative glass-morphism p-5 flex items-center justify-center border border-white/5 hover:border-white/40 hover:scale-110 active:scale-95 transition-all duration-300 backdrop-blur-sm rounded-xl"
+                                                        className="group relative glass-morphism p-6 flex items-center justify-center border border-white/10 hover:border-white/50 hover:bg-white/[0.05] hover:scale-125 active:scale-95 transition-all duration-500 backdrop-blur-2xl rounded-2xl shadow-2xl"
                                                     >
-                                                        <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+                                                        <div className="w-12 h-12 flex items-center justify-center">
                                                             <img
                                                                 src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
                                                                 alt={link.name}
                                                                 className={cn(
-                                                                    "w-full h-full object-contain transition-all",
-                                                                    link.icon ? "rounded-sm" : ""
+                                                                    "w-full h-full object-contain transition-all filter brightness-110",
+                                                                    link.icon ? "rounded-md" : "saturate-150"
                                                                 )}
                                                             />
+                                                        </div>
+                                                        <div className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity text-[8px] uppercase tracking-widest text-white/40 whitespace-nowrap pointer-events-none font-bold">
+                                                            {link.name}
                                                         </div>
                                                     </a>
                                                 ))}
@@ -231,24 +232,26 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                 </div>
                             </div>
 
-                            {/* Right Column: Raider.io Dungeons Widget - Pushed far right (NO GRAYSCALE) */}
-                            <div className="w-full flex justify-end px-4 lg:px-8 mt-12 lg:mt-0">
-                                <div className="w-full max-w-[360px] lg:fixed lg:right-10 lg:top-24 space-y-6">
-                                    <div className="glass border border-white/10 rounded-sm overflow-hidden p-1 backdrop-blur-md shadow-2xl">
-                                        <div className="p-3 bg-white/5 border-b border-white/10 text-[9px] uppercase tracking-[0.5em] text-white/40 font-bold mb-1 flex items-center justify-between">
-                                            <span>Derniers Donjons</span>
-                                            <BarChart3 className="w-3 h-3 opacity-30" />
+                            {/* Right Column: Raider.io Dungeons Widget - TIGHTENED & PUSHED RIGHT */}
+                            <div className="w-full flex justify-end px-12 mt-20 lg:mt-0 lg:sticky lg:top-24">
+                                <div className="w-full max-w-[320px] lg:mr-4">
+                                    <div className="glass-morphism border border-white/20 rounded-lg overflow-hidden p-1 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
+                                        <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
+                                            <span>MYTHIC+ LOGS</span>
+                                            <BarChart3 className="w-4 h-4 text-white/20" />
                                         </div>
-                                        <iframe
-                                            src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
-                                            style={{ border: 'none', width: '100%', height: '580px' }}
-                                            className="transition-all duration-700"
-                                        />
+                                        <div className="relative w-full h-[520px] overflow-hidden">
+                                            <iframe
+                                                src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
+                                                style={{ border: 'none', width: '300px', height: '520px', marginLeft: '-5px' }}
+                                                className="transition-all duration-700 filter brightness-110 pointer-events-auto"
+                                            />
+                                        </div>
                                     </div>
 
-                                    <div className="p-4 glass border border-white/5 rounded-sm opacity-20">
-                                        <p className="text-[8px] uppercase tracking-[0.3em] leading-relaxed text-center font-bold">
-                                            SYNC AZEROTH REAL-TIME
+                                    <div className="p-5 mt-6 glass border border-white/5 rounded-lg bg-black/40">
+                                        <p className="text-[9px] uppercase tracking-[0.4em] leading-relaxed text-center font-black text-white/30 animate-pulse">
+                                            RETRANSMISSION EN DIRECT
                                         </p>
                                     </div>
                                 </div>
@@ -257,18 +260,18 @@ export default async function CharacterHubPage({ params }: PageProps) {
                         </div>
                     )}
 
-                    <footer className="mt-40 text-center opacity-10">
-                        <p className="text-[8px] uppercase tracking-[0.8em]">Azeroth Hub Connection Established</p>
+                    <footer className="mt-48 text-center opacity-10">
+                        <p className="text-[9px] uppercase tracking-[1em] font-black">Protocol Azure-Sync-06 // Complete</p>
                     </footer>
                 </div>
             </div>
         );
     } catch (err) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-center p-10">
-                <div>
-                    <h1 className="text-2xl font-black uppercase text-white/20">Une erreur critique est survenue</h1>
-                    <Link href="/" className="mt-6 inline-block text-[10px] tracking-widest text-white/60 hover:text-white italic underline">Retourner au menu</Link>
+            <div className="min-h-screen flex items-center justify-center text-center p-10 bg-black">
+                <div className="glass p-20 border border-white/10 rounded-3xl">
+                    <h1 className="text-4xl font-black uppercase text-white/10 italic">Lien Perdu avec Azeroth</h1>
+                    <Link href="/" className="mt-10 inline-block px-10 py-5 bg-white text-black text-[11px] tracking-[0.5em] font-black uppercase hover:bg-white/80 transition-all rounded-sm italic">Reconnecter</Link>
                 </div>
             </div>
         );
