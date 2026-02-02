@@ -1,11 +1,71 @@
 import { getCharacterProfile } from "@/lib/wow";
 import CharacterCard from "@/components/CharacterCard";
-import { Search, Plus, Swords, User, ShieldCheck, Compass } from "lucide-react";
+import {
+  BarChart3,
+  ExternalLink,
+  Trophy,
+  BookOpen,
+  Zap,
+  Compass,
+  Layers,
+  Search,
+  Plus
+} from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
-  // Personnage principal par défaut
   const mainCharacter = await getCharacterProfile("eu", "ysondre", "moussman");
+
+  const categories = [
+    {
+      title: "Performance & Progress",
+      icon: BarChart3,
+      links: [
+        {
+          name: "Raider.io",
+          desc: "Mythique+, Raid Progress & Gear",
+          url: "https://raider.io/characters/eu/ysondre/Moussman",
+          color: "text-orange-400"
+        },
+        {
+          name: "Warcraft Logs",
+          desc: "Analyses détaillées des combats",
+          url: "https://fr.warcraftlogs.com/character/eu/ysondre/moussman",
+          color: "text-blue-400"
+        }
+      ]
+    },
+    {
+      title: "Collections & Achievements",
+      icon: Trophy,
+      links: [
+        {
+          name: "SimpleArmory",
+          desc: "Visualisation des Montures & Mascottes",
+          url: "https://simplearmory.com/#/eu/ysondre/moussman/collectable/mounts",
+          color: "text-yellow-400"
+        }
+      ]
+    },
+    {
+      title: "Reference & Meta (Monk)",
+      icon: BookOpen,
+      links: [
+        {
+          name: "Murlok.io - Brewmaster",
+          desc: "Top builds & talents Mythique+",
+          url: "https://murlok.io/monk/brewmaster/m+",
+          color: "text-green-500"
+        },
+        {
+          name: "Murlok.io - Mistweaver",
+          desc: "Top builds & talents Mythique+",
+          url: "https://murlok.io/monk/mistweaver/m+",
+          color: "text-teal-400"
+        }
+      ]
+    }
+  ];
 
   return (
     <div className="relative min-h-screen">
@@ -15,90 +75,89 @@ export default async function Home() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/5 rounded-full blur-[120px]" />
       </div>
 
-      <div className="relative z-10 pt-24 pb-20 px-4 md:px-10 max-w-7xl mx-auto">
-        {/* Header UX Optimisé */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-20 gap-8">
-          <div className="flex items-center gap-6">
-            <div className="w-16 h-16 glass-morphism flex items-center justify-center">
-              <Compass className="w-8 h-8 text-white/40" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold tracking-tighter leading-none mb-1">
-                WOW <span className="text-white/20 italic">TRACKER</span>
-              </h1>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-white/30">
-                Suivi de performance en temps réel
-              </p>
-            </div>
+      <div className="relative z-10 pt-24 pb-20 px-4 md:px-10 max-w-5xl mx-auto">
+        {/* Header */}
+        <header className="flex flex-col items-center text-center mb-16">
+          <div className="w-20 h-20 glass-morphism rounded-full flex items-center justify-center mb-6">
+            <Compass className="w-10 h-10 text-white/40" />
           </div>
-
-          <div className="flex items-center gap-3">
-            <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-white transition-colors" />
-              <input
-                type="text"
-                placeholder="RECHERCHER UN AVENTURIER..."
-                className="bg-white/5 border border-white/10 px-12 py-3 rounded-full text-[10px] uppercase tracking-widest focus:outline-none focus:border-white/30 focus:w-[300px] transition-all w-[240px]"
-              />
-            </div>
-            <button className="glass w-12 h-12 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all">
-              <Plus className="w-5 h-5" />
-            </button>
-          </div>
+          <h1 className="text-5xl font-bold tracking-tighter mb-2 italic">
+            MOUSSMAN <span className="text-white/20 not-italic">HUB</span>
+          </h1>
+          <p className="text-[10px] uppercase tracking-[0.4em] text-white/30">
+            Ysondre - EU | Monk Master
+          </p>
         </header>
 
-        {/* Dynamic Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          {[
-            { label: "Personnages", value: "01", icon: User },
-            { label: "Mythique+ Avg", value: mainCharacter ? Math.round(mainCharacter.mythic_plus_scores_by_season?.[0]?.scores.all || 0) : "0", icon: Swords },
-            { label: "iLevel Max", value: mainCharacter?.gear?.item_level_equipped || "0", icon: ShieldCheck },
-            { label: "Région", value: "EU-FR", icon: Compass },
-          ].map((stat, i) => (
-            <div key={i} className="glass border border-white/5 p-4 rounded-sm">
-              <div className="flex items-center gap-3 text-white/20 mb-2">
-                <stat.icon className="w-3 h-3" />
-                <span className="text-[9px] uppercase tracking-[0.2em]">{stat.label}</span>
+        {/* Character Quick View */}
+        <div className="mb-20">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="w-8 h-[1px] bg-white/20" />
+            <h2 className="text-xs uppercase tracking-[0.3em] text-white/40">Statut Actuel</h2>
+          </div>
+          {mainCharacter ? (
+            <div className="max-w-md mx-auto">
+              <CharacterCard character={mainCharacter} />
+            </div>
+          ) : (
+            <div className="glass p-8 text-center text-white/20 uppercase text-xs tracking-widest">
+              Données de personnage indisponibles
+            </div>
+          )}
+        </div>
+
+        {/* Categories Grid */}
+        <div className="space-y-12">
+          {categories.map((cat, i) => (
+            <div key={i} className="space-y-6">
+              <div className="flex items-center gap-4">
+                <cat.icon className="w-4 h-4 text-white/20" />
+                <h2 className="text-xs uppercase tracking-[0.3em] text-white/60 font-medium">
+                  {cat.title}
+                </h2>
+                <div className="flex-1 h-[1px] bg-white/5" />
               </div>
-              <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
+
+              <div className="grid gap-4">
+                {cat.links.map((link, li) => (
+                  <a
+                    key={li}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative glass-morphism p-6 flex items-center justify-between border border-white/5 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-500 overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative z-10 flex items-center gap-6">
+                      <div className={`w-10 h-10 rounded-full bg-white/5 flex items-center justify-center ${link.color} group-hover:scale-110 transition-transform duration-500`}>
+                        <Layers className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold tracking-tight mb-1 group-hover:translate-x-1 transition-transform">
+                          {link.name}
+                        </h3>
+                        <p className="text-xs text-white/40 tracking-wide font-light">
+                          {link.desc}
+                        </p>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-white/10 group-hover:text-white/40 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                  </a>
+                ))}
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {mainCharacter ? (
-            <CharacterCard character={mainCharacter} />
-          ) : (
-            <div className="col-span-full py-20 text-center glass-morphism border-dashed border-white/10">
-              <p className="text-white/40 uppercase tracking-widest text-sm">
-                Aucun personnage trouvé. Lancez une recherche.
-              </p>
-            </div>
-          )}
-
-          <button className="border border-dashed border-white/10 rounded-sm flex flex-col items-center justify-center p-12 group hover:border-white/20 transition-colors">
-            <Plus className="w-8 h-8 text-white/10 group-hover:text-white/40 transition-colors mb-4" />
-            <span className="text-[10px] uppercase tracking-[0.3em] text-white/20 group-hover:text-white/40">
-              Ajouter un perso
-            </span>
-          </button>
-        </div>
-
-        {/* Status Indicators */}
-        <footer className="mt-32 pt-8 border-t border-white/5 flex flex-wrap justify-between items-center gap-6">
-          <div className="flex gap-8">
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-              <span className="text-[9px] uppercase tracking-widest text-white/40">Raider.io API Online</span>
-            </div>
-            <div className="flex items-center gap-2 opacity-50">
-              <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
-              <span className="text-[9px] uppercase tracking-widest text-white/40">Warcraft Logs Pending</span>
-            </div>
+        {/* Footer */}
+        <footer className="mt-32 pt-16 border-t border-white/5 text-center">
+          <div className="flex justify-center gap-8 mb-8 opacity-40">
+            <Search className="w-4 h-4 cursor-help" />
+            <Plus className="w-4 h-4 cursor-help" />
+            <Zap className="w-4 h-4 cursor-help" />
           </div>
-          <p className="text-[9px] uppercase tracking-[0.4em] text-white/10">
-            Design & Engine by Antigravity v1.0
+          <p className="text-[9px] uppercase tracking-[0.5em] text-white/10">
+            Crafted for Moussman @ Ysondre-EU
           </p>
         </footer>
       </div>
