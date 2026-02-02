@@ -19,6 +19,13 @@ interface PageProps {
     }>;
 }
 
+interface WowLink {
+    name: string;
+    url: string;
+    domain?: string;
+    icon?: string;
+}
+
 const CLASS_COLORS: Record<string, string> = {
     "monk": "#00FF96",
     "paladin": "#F58CBA",
@@ -50,38 +57,34 @@ export default async function CharacterHubPage({ params }: PageProps) {
         const encRealm = encodeURIComponent(realm);
         const encRegion = encodeURIComponent(region);
 
-        const categories = [
+        const categories: { title: string; icon: any; links: WowLink[] }[] = [
             {
-                title: "Performance & Progress",
+                title: "Performance",
                 icon: BarChart3,
                 links: [
                     {
                         name: "Raider.io",
-                        desc: "Mythique+, Raid Progress & Gear",
                         url: `https://raider.io/characters/${region}/${realm}/${encName}`,
                         domain: "raider.io",
                     },
                     {
-                        name: "Armurerie Blizzard",
-                        desc: "Profil officiel Battle.net",
+                        name: "Blizzard",
                         url: `https://worldofwarcraft.blizzard.com/fr-fr/character/${region}/${realm}/${encName}`,
                         domain: "blizzard.com",
                     },
                     {
-                        name: "Warcraft Logs",
-                        desc: "Analyses détaillées des combats",
+                        name: "Logs",
                         url: `https://fr.warcraftlogs.com/character/${region}/${realm}/${encName}`,
                         domain: "warcraftlogs.com",
                     }
                 ]
             },
             {
-                title: "Collections & Achievements",
+                title: "Collections",
                 icon: Trophy,
                 links: [
                     {
                         name: "SimpleArmory",
-                        desc: "Visualisation des Montures & Mascottes",
                         url: `https://simplearmory.com/#/${region}/${realm}/${encName}/collectable/mounts`,
                         domain: "simplearmory.com",
                     }
@@ -91,20 +94,18 @@ export default async function CharacterHubPage({ params }: PageProps) {
 
         if (classKey === "monk") {
             categories.push({
-                title: "Reference & Meta (Monk)",
+                title: "Meta",
                 icon: BookOpen,
                 links: [
                     {
-                        name: "Murlok.io - Brewmaster",
-                        desc: "Top builds & talents Mythique+",
+                        name: "Brewmaster",
                         url: "https://murlok.io/monk/brewmaster/m+",
-                        domain: "murlok.io",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/spell_monk_brewmaster_spec.jpg",
                     },
                     {
-                        name: "Murlok.io - Mistweaver",
-                        desc: "Top builds & talents Mythique+",
+                        name: "Mistweaver",
                         url: "https://murlok.io/monk/mistweaver/m+",
-                        domain: "murlok.io",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/spell_monk_mistweaver_spec.jpg",
                     }
                 ]
             });
@@ -120,7 +121,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     />
                 </div>
 
-                <div className="relative z-10 w-full max-w-7xl pt-12 pb-20 px-6">
+                <div className="relative z-10 w-full max-w-[1400px] pt-12 pb-20 px-6">
                     <Link
                         href="/"
                         className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-white/40 hover:text-white transition-all mb-12 group"
@@ -137,19 +138,19 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             <Link href="/" className="inline-block px-10 py-4 bg-white text-black text-[10px] font-black tracking-[0.3em] hover:bg-white/80 transition-all">REESSAYER</Link>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                        <div className="flex flex-col lg:flex-row justify-center items-start gap-16">
 
-                            {/* Left Side: Character Info & Links */}
-                            <div className="lg:col-span-7 space-y-16">
-                                <header className="mb-12">
-                                    <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-2 italic uppercase flex flex-col leading-none">
+                            {/* Central Hub: Narrower & Centered */}
+                            <div className="w-full max-w-md lg:max-w-lg flex flex-col items-center space-y-12 shrink-0">
+                                <header className="text-center">
+                                    <h1 className="text-6xl md:text-7xl font-black tracking-tighter mb-2 italic uppercase flex flex-col leading-none">
                                         <span className="text-white">{character.name}</span>
-                                        <span className="text-white/10 not-italic text-4xl tracking-[0.2em] -mt-1">HUB</span>
+                                        <span className="text-white/10 not-italic text-3xl tracking-[0.2em] -mt-1">HUB</span>
                                     </h1>
-                                    <div className="mt-4 flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-white/30">
-                                        <span className="w-8 h-[1px] bg-white/10" />
-                                        <span>{character.realm} • {character.region.toUpperCase()}</span>
-                                        <span className="w-8 h-[1px] bg-white/10" />
+                                    <div className="mt-4 flex items-center justify-center gap-4 text-[9px] uppercase tracking-[0.4em] text-white/30 font-bold">
+                                        <span>{character.realm}</span>
+                                        <span className="w-1 h-1 bg-white/10 rounded-full" />
+                                        <span>{character.region.toUpperCase()}</span>
                                     </div>
                                 </header>
 
@@ -157,46 +158,38 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                     <CharacterCard character={character} />
                                 </div>
 
-                                <div className="space-y-16 pt-8">
+                                {/* Compact Links: Icons Only */}
+                                <div className="w-full space-y-10 pt-4">
                                     {categories.map((cat, i) => (
-                                        <div key={i} className="space-y-6">
-                                            <div className="flex items-center gap-6">
-                                                <div className="flex items-center gap-3">
-                                                    <cat.icon className="w-3 h-3 text-white/20" />
-                                                    <h2 className="text-[10px] uppercase tracking-[0.5em] text-white/40 font-bold">
-                                                        {cat.title}
-                                                    </h2>
-                                                </div>
-                                                <div className="flex-1 h-[1px] bg-gradient-to-r from-white/10 to-transparent" />
+                                        <div key={i} className="flex flex-col items-center space-y-4">
+                                            <div className="flex items-center gap-3 w-full">
+                                                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/10" />
+                                                <h2 className="text-[9px] uppercase tracking-[0.5em] text-white/40 font-bold">
+                                                    {cat.title}
+                                                </h2>
+                                                <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/10" />
                                             </div>
 
-                                            <div className="grid gap-3">
+                                            <div className="flex flex-wrap justify-center gap-4">
                                                 {cat.links.map((link, li) => (
                                                     <a
                                                         key={li}
                                                         href={link.url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="group relative glass-morphism p-5 flex items-center justify-between border border-white/5 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300 backdrop-blur-sm"
+                                                        title={link.name}
+                                                        className="group relative glass-morphism p-4 flex items-center justify-center border border-white/5 hover:border-white/40 hover:scale-110 active:scale-95 transition-all duration-300 backdrop-blur-sm rounded-lg"
                                                     >
-                                                        <div className="flex items-center gap-5">
-                                                            <div className="w-10 h-10 rounded-full bg-white/5 border border-white/5 p-2 flex items-center justify-center group-hover:bg-white/10 transition-colors shrink-0">
-                                                                <img
-                                                                    src={`https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
-                                                                    alt={link.name}
-                                                                    className="w-full h-full object-contain"
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <h3 className="text-lg font-black tracking-tight mb-0.5 group-hover:text-white transition-colors uppercase italic leading-none">
-                                                                    {link.name}
-                                                                </h3>
-                                                                <p className="text-[9px] text-white/20 tracking-[0.1em] uppercase font-medium">
-                                                                    {link.desc}
-                                                                </p>
-                                                            </div>
+                                                        <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+                                                            <img
+                                                                src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
+                                                                alt={link.name}
+                                                                className={cn(
+                                                                    "w-full h-full object-contain transition-all",
+                                                                    link.icon ? "rounded-sm" : "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100"
+                                                                )}
+                                                            />
                                                         </div>
-                                                        <ExternalLink className="w-3 h-3 text-white/20 group-hover:text-white/60 transition-colors" />
                                                     </a>
                                                 ))}
                                             </div>
@@ -205,8 +198,8 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                 </div>
                             </div>
 
-                            {/* Right Side: Raider.io Dungeons Widget */}
-                            <div className="lg:col-span-5 space-y-6 sticky top-12">
+                            {/* Right Side: Raider.io Dungeons Widget - Pushed far right */}
+                            <div className="w-full max-w-sm lg:w-[380px] space-y-6 sticky top-12 lg:ml-auto">
                                 <div className="glass border border-white/10 rounded-sm overflow-hidden p-1 backdrop-blur-md shadow-2xl">
                                     <div className="p-3 bg-white/5 border-b border-white/10 text-[9px] uppercase tracking-[0.5em] text-white/40 font-bold mb-1 flex items-center justify-between">
                                         <span>Derniers Donjons</span>
@@ -214,14 +207,14 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                     </div>
                                     <iframe
                                         src={`https://raider.io/widgets/dungeons?date=all&characterId=${name === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
-                                        style={{ border: 'none', width: '100%', height: '500px' }}
+                                        style={{ border: 'none', width: '100%', height: '560px' }}
                                         className="grayscale opacity-90 hover:grayscale-0 transition-all duration-700"
                                     />
                                 </div>
 
-                                <div className="p-6 glass border border-white/5 rounded-sm opacity-40">
-                                    <p className="text-[9px] uppercase tracking-[0.3em] leading-relaxed text-center">
-                                        Données en temps réel synchronisées avec Azeroth.
+                                <div className="p-4 glass border border-white/5 rounded-sm opacity-20">
+                                    <p className="text-[8px] uppercase tracking-[0.3em] leading-relaxed text-center font-bold">
+                                        Synchronisation Azeroth Real-time
                                     </p>
                                 </div>
                             </div>
