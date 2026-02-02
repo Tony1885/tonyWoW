@@ -1,17 +1,17 @@
 export interface WowCharacter {
     name: string;
-    race: string;
-    class: string;
-    active_spec_name: string;
-    active_spec_role: string;
-    gender: string;
-    faction: string;
-    achievement_points: number;
-    thumbnail_url: string;
+    race?: string;
+    class?: string;
+    active_spec_name?: string;
+    active_spec_role?: string;
+    gender?: string;
+    faction?: string;
+    achievement_points?: number;
+    thumbnail_url?: string;
     region: string;
     realm: string;
-    last_crawled_at: string;
-    profile_url: string;
+    last_crawled_at?: string;
+    profile_url?: string;
     gear?: {
         item_level_equipped: number;
         item_level_total: number;
@@ -28,9 +28,11 @@ export interface WowCharacter {
 
 export async function getCharacterProfile(region: string, realm: string, name: string): Promise<WowCharacter | null> {
     try {
-        const encodedRegion = encodeURIComponent(region);
+        // Safe decoding/encoding to avoid double encoding issues
+        const decodedName = decodeURIComponent(name);
+        const encodedName = encodeURIComponent(decodedName);
         const encodedRealm = encodeURIComponent(realm);
-        const encodedName = encodeURIComponent(name);
+        const encodedRegion = encodeURIComponent(region);
 
         const url = `https://raider.io/api/v1/characters/profile?region=${encodedRegion}&realm=${encodedRealm}&name=${encodedName}&fields=gear,mythic_plus_scores_by_season:current`;
 
@@ -40,11 +42,15 @@ export async function getCharacterProfile(region: string, realm: string, name: s
         });
 
         if (!response.ok) {
-            console.error(`Raider.io API error: ${response.status} ${response.statusText}`);
+            console.warn(`Raider.io API status: ${response.status} for ${name}`);
             return null;
         }
 
         const data = await response.json();
+
+        // Final safety check on mandatory data
+        if (!data || !data.name) return null;
+
         return data;
     } catch (error) {
         console.error("Error fetching WoW character:", error);
