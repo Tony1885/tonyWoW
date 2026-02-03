@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html id="rio-html" lang="en-us">
+<head>
+  <!--
+    (`\ .-') /`               (`\ .-') /`                      .-') _     .-')
+    `.( OO ),'                `.( OO ),'                     (  OO) )   ( OO ).
+  ,--./  .--.   .-'),-----. ,--./  .--.       ,--. ,--. ,--.  /     '._ (_)---\_) ,--. ,--.
+  |      |  |  ( OO'  .-.  '|      |  |   .-')| ,| |  | |  |  |'--...__)/    _ |  |  | |  |
+  |  |   |  |, /   |  | |  ||  |   |  |, ( OO |(_| |  | | .-')'--.  .--'\  :` `.  |  | | .-')
+  |  |.'.|  |_)\_) |  |\|  ||  |.'.|  |_)| `-'|  | |  |_|( OO )  |  |    '..`''.) |  |_|( OO )
+  |         |    \ |  | |  ||         |  ,--. |  | |  | | `-' /  |  |   .-._)   \ |  | | `-' /
+  |   ,'.   |     `'  '-'  '|   ,'.   |  |  '-'  /('  '-'(_.-'   |  |   \       /('  '-'(_.-'
+  '--'   '--'       `-----' '--'   '--'   `-----'   `-----'      `--'    `-----'   `-----'
+  -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-site-verification" content="Vz2CVmvm5d-CrXAB_bKlGXhdAHSW97_ASBNfSjrpm-I" />
+  <meta property="og:site_name" content="Raider.IO" />
+  <meta property="fb:app_id" content="1855043268105701" />
+  <meta name="twitter:site" content="@RaiderIO_WoW" />
+  <meta name="application-name" content="Raider.IO"/>
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="https://cdn.raiderio.net/images/mstile-144x144.png" />
+  <meta name="msapplication-square70x70logo" content="https://cdn.raiderio.net/images/mstile-70x70.png" />
+  <meta name="msapplication-square150x150logo" content="https://cdn.raiderio.net/images/mstile-150x150.png" />
+  <meta name="msapplication-wide310x150logo" content="https://cdn.raiderio.net/images/mstile-310x150.png" />
+  <meta name="msapplication-square310x310logo" content="https://cdn.raiderio.net/images/mstile-310x310.png" />
+
+  <!-- default meta/header tags until ssr is back -->
+  <title>World of Warcraft Rankings for Mythic+ and Raid Progress</title>
+  <meta property="og:url" content="https://raider.io" />
+  <meta property="og:image" content="http://cdn.raiderio.net/images/fb_app_image.jpg" />
+  <meta property="og:title" content="World of Warcraft Rankings for Mythic+ and Raid Progress" />
+  <meta property="og:type" content="website" />
+  <meta name="description" content="A top World of Warcraft (WoW) Mythic+ and Raiding site featuring character &amp; guild profiles, Mythic+ Scores, Raid Progress, Guild Recruitment, the Race to World First, and more." />
+  <meta property="twitter:image" content="http://cdn.raiderio.net/images/fb_app_image.jpg" />
+  <meta property="twitter:card" content="summary" />
+  <meta property="theme-color" content="#ffbd0a" />
+  <!-- end defaults -->
+
+  
+  <link rel="preload" href="https://cdn.raiderio.net/assets/font/SalesforceSans-Regular-679547df303acfaf9b97.woff2" as="font" type="font/woff2" crossorigin />
+  
+  <link rel="preload" href="https://cdn.raiderio.net/assets/font/SalesforceSans-Bold-edf948a2181aa81e6045.woff2" as="font" type="font/woff2" crossorigin />
+  
+  <link rel="preload" href="https://cdn.raiderio.net/assets/font/fa-solid-900-db4ca34781183536f299.woff2" as="font" type="font/woff2" crossorigin />
+  
+
+  <style rel="stylesheet" type="text/css">
+    .fresnel-container{margin:0;padding:0;}
+@media not all and (min-width:0px) and (max-width:767.98px){.fresnel-at-sm{display:none!important;}}
+@media not all and (min-width:768px) and (max-width:1023.98px){.fresnel-at-md{display:none!important;}}
+@media not all and (min-width:1024px) and (max-width:1279.98px){.fresnel-at-lg{display:none!important;}}
+@media not all and (min-width:1280px){.fresnel-at-xl{display:none!important;}}
+@media not all and (max-width:767.98px){.fresnel-lessThan-md{display:none!important;}}
+@media not all and (max-width:1023.98px){.fresnel-lessThan-lg{display:none!important;}}
+@media not all and (max-width:1279.98px){.fresnel-lessThan-xl{display:none!important;}}
+@media not all and (min-width:768px){.fresnel-greaterThan-sm{display:none!important;}}
+@media not all and (min-width:1024px){.fresnel-greaterThan-md{display:none!important;}}
+@media not all and (min-width:1280px){.fresnel-greaterThan-lg{display:none!important;}}
+@media not all and (min-width:0px){.fresnel-greaterThanOrEqual-sm{display:none!important;}}
+@media not all and (min-width:768px){.fresnel-greaterThanOrEqual-md{display:none!important;}}
+@media not all and (min-width:1024px){.fresnel-greaterThanOrEqual-lg{display:none!important;}}
+@media not all and (min-width:1280px){.fresnel-greaterThanOrEqual-xl{display:none!important;}}
+@media not all and (min-width:0px) and (max-width:767.98px){.fresnel-between-sm-md{display:none!important;}}
+@media not all and (min-width:0px) and (max-width:1023.98px){.fresnel-between-sm-lg{display:none!important;}}
+@media not all and (min-width:0px) and (max-width:1279.98px){.fresnel-between-sm-xl{display:none!important;}}
+@media not all and (min-width:768px) and (max-width:1023.98px){.fresnel-between-md-lg{display:none!important;}}
+@media not all and (min-width:768px) and (max-width:1279.98px){.fresnel-between-md-xl{display:none!important;}}
+@media not all and (min-width:1024px) and (max-width:1279.98px){.fresnel-between-lg-xl{display:none!important;}}
+  </style>
+
+  
+  <link rel="stylesheet" type="text/css" href="https://cdn.raiderio.net/assets/css/mainStyles-a0b3e04799c0c7a700dd.css" />
+  
+
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://cdn.raiderio.net/images/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://cdn.raiderio.net/images/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://cdn.raiderio.net/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://cdn.raiderio.net/images/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="60x60" href="https://cdn.raiderio.net/images/apple-touch-icon-60x60.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://cdn.raiderio.net/images/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://cdn.raiderio.net/images/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://cdn.raiderio.net/images/apple-touch-icon-152x152.png" />
+  <link rel="icon" type="image/png" href="https://cdn.raiderio.net/images/favicon-196x196.png" sizes="196x196" />
+  <link rel="icon" type="image/png" href="https://cdn.raiderio.net/images/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="https://cdn.raiderio.net/images/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://cdn.raiderio.net/images/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="https://cdn.raiderio.net/images/favicon-128.png" sizes="128x128" />
+  <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="RaiderIO" />
+
+  
+  <link rel="alternate" type="application/rss+xml" title="Raider.IO News" href="/rss.xml">
+  <link rel="alternate" type="application/json" title="Raider.IO News" href="/feed.json" />
+  
+
+  <script type="application/ld+json">
+  {"@context":"http://schema.org","@graph":[{"@type":"Organization","name":"Raider.IO","url":"https://raider.io","logo":"https://cdn.raiderio.net/images/brand/Icon_FullColor.png","sameAs":["https://www.facebook.com/raider.io","https://twitter.com/RaiderIO_WoW","https://www.instagram.com/raiderio_wow/","https://www.github.com/RaiderIO","https://www.patreon.com/RaiderIO"]}]}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"http://schema.org","@type":"WebSite","@graph":[{"url":"https://raider.io","potentialAction":{"@type":"SearchAction","target":"https://raider.io/search?type=character&name[0][contains]={search_term_string}","query-input":"required name=search_term_string"}}]}
+  </script>
+
+  
+  <script>
+  var _rollbarConfig = {
+    accessToken: '38d18ea73a40440580a48366587bac8c',
+    addErrorContext: true,
+    autoInstrument: true,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    hostSafeList: ['raider.io', 'raiderio.net'],
+    ignoredMessages: [
+      'ReferenceError:'
+    ],
+    payload: {
+      environment: 'production',
+      client: {
+        javascript: {
+          source_map_enabled: true,
+          code_version: '0.62.5',
+          guess_uncaught_frames: true
+        }
+      }
+    }
+  };
+  // Rollbar Snippet
+  !function(r){var e={};function o(n){if(e[n])return e[n].exports;var t=e[n]={i:n,l:!1,exports:{}};return r[n].call(t.exports,t,t.exports,o),t.l=!0,t.exports}o.m=r,o.c=e,o.d=function(r,e,n){o.o(r,e)||Object.defineProperty(r,e,{enumerable:!0,get:n})},o.r=function(r){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(r,"__esModule",{value:!0})},o.t=function(r,e){if(1&e&&(r=o(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var n=Object.create(null);if(o.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var t in r)o.d(n,t,function(e){return r[e]}.bind(null,t));return n},o.n=function(r){var e=r&&r.__esModule?function(){return r.default}:function(){return r};return o.d(e,"a",e),e},o.o=function(r,e){return Object.prototype.hasOwnProperty.call(r,e)},o.p="",o(o.s=0)}([function(r,e,o){"use strict";var n=o(1),t=o(5);_rollbarConfig=_rollbarConfig||{},_rollbarConfig.rollbarJsUrl=_rollbarConfig.rollbarJsUrl||"https://cdn.rollbar.com/rollbarjs/refs/tags/v2.26.4/rollbar.min.js",_rollbarConfig.async=void 0===_rollbarConfig.async||_rollbarConfig.async;var a=n.setupShim(window,_rollbarConfig),l=t(_rollbarConfig);window.rollbar=n.Rollbar,a.loadFull(window,document,!_rollb

@@ -43,52 +43,45 @@ export interface WowCharacter {
 
 /**
  * Fetches a character profile from Raider.io.
- * Handles accent normalization and correct URI encoding.
+ * Extremely robust encoding for characters with accents.
  */
 export async function getCharacterProfile(region: string, realm: string, name: string): Promise<WowCharacter | null> {
     try {
-        // Normalize and clean inputs
         const r = region.toLowerCase().trim();
         const rl = realm.toLowerCase().trim();
 
-        // Ensure name is decoded before re-encoding to avoid double encoding bug
+        // Clean and normalize name
         let n = name;
-        try {
-            n = decodeURIComponent(name);
-        } catch {
-            // ignore if already decoded
-        }
+        try { n = decodeURIComponent(name); } catch { }
+        n = n.normalize('NFC').trim();
 
-        // Final normalization for character names (NFC is preferred by Blizzard/RIO)
-        n = n.normalize('NFC').toLowerCase().trim();
+        // For Raider.io API, names with accents can be tricky. 
+        // We'll try both the normalized name and the raw encoded version if one fails.
+        const namesToTry = [
+            encodeURIComponent(n.toLowerCase()),
+            encodeURIComponent(n) // case sensitive fallback
+        ];
 
-        const encodedName = encodeURIComponent(n);
-        const encodedRealm = encodeURIComponent(rl);
-        const encodedRegion = encodeURIComponent(r);
+        for (const encodedName of namesToTry) {
+            const fields = ["gear", "mythic_plus_scores_by_season:current", "mythic_plus_ranks"].join(",");
+            const url = `https://raider.io/api/v1/characters/profile?region=${r}&realm=${rl}&name=${encodedName}&fields=${fields}`;
 
-        const fields = [
-            "gear",
-            "mythic_plus_scores_by_season:current",
-            "mythic_plus_ranks"
-        ].join(",");
+            const response = await fetch(url, {
+                next: { revalidate: 60 }, // Reduce revalidate for testing
+                headers: {
+                    'Accept': 'application/json',
+                    'User-Agent': 'WoW-Dashboard-Agent/1.0'
+                }
+            });
 
-        const url = `https://raider.io/api/v1/characters/profile?region=${encodedRegion}&realm=${encodedRealm}&name=${encodedName}&fields=${fields}`;
-
-        const response = await fetch(url, {
-            next: { revalidate: 300 }, // Cache for 5 mins
-            headers: {
-                'Accept': 'application/json',
-                'User-Agent': 'WoW-Dashboard-Agent/1.0'
+            if (response.ok) {
+                const data = await response.json();
+                if (data && data.name) return data;
             }
-        });
-
-        if (!response.ok) {
-            console.warn(`Profile Fetch Failure [${response.status}] for ${n}@${rl}`);
-            return null;
         }
 
-        const data = await response.json();
-        return data && data.name ? data : null;
+        console.warn(`Profile Fetch failed after tries for ${n}@${rl}`);
+        return null;
     } catch (error) {
         console.error("Critical Profile Fetch Error:", error);
         return null;
