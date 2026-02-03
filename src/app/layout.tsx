@@ -7,8 +7,23 @@ import CustomCursor from "@/components/CustomCursor";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "WoW Character Hub | Premium Tracker",
-  description: "Awwwards-style premium web project with Next.js, Tailwind v4, GSAP, and Framer Motion.",
+  title: {
+    default: "WoW Dashboard | Azure Protocol",
+    template: "%s | Azure Protocol"
+  },
+  description: "Plateforme premium de suivi World of Warcraft. Analyse de performance Mythic+, collections de montures et actualités Azeroth.",
+  keywords: ["World of Warcraft", "WoW", "Raider.io", "Mythic Plus", "Azure Protocol", "Moussman", "Mamènne"],
+  openGraph: {
+    title: "WoW Dashboard | Azure Protocol",
+    description: "Plateforme premium de suivi World of Warcraft.",
+    type: "website",
+    locale: "fr_FR",
+    siteName: "WoW Dashboard",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  }
 };
 
 export default function RootLayout({

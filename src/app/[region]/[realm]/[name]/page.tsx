@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 
 interface PageProps {
     params: Promise<{
@@ -16,6 +17,17 @@ interface PageProps {
         realm: string;
         name: string;
     }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const p = await params;
+    const name = decodeURIComponent(p.name).normalize('NFC');
+    const realm = decodeURIComponent(p.realm).normalize('NFC');
+
+    return {
+        title: `${name} @ ${realm.charAt(0).toUpperCase() + realm.slice(1)} | WoW Gaming Hub`,
+        description: `Analyse de performance et progression Mythic+ pour ${name} sur ${realm}. Powered by Azure Protocol.`,
+    };
 }
 
 interface WowLink {
@@ -59,16 +71,17 @@ function safeDecode(val: string) {
 }
 
 export default async function CharacterHubPage({ params }: PageProps) {
-    try {
+    // Re-importing inside for clear scope or just use common pattern
+    const getCharacterData = async () => {
         const p = await params;
-        if (!p) throw new Error("Missing route parameters");
-
         const region = String(p.region).toLowerCase();
         const realm = String(p.realm).toLowerCase();
-        const nameParam = String(p.name);
+        const decodedName = safeDecode(p.name);
+        return { region, realm, decodedName };
+    };
 
-        // Normalize name
-        const decodedName = safeDecode(nameParam);
+    try {
+        const { region, realm, decodedName } = await getCharacterData();
         const lowerName = decodedName.toLowerCase();
 
         // Fetch character data
