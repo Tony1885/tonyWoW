@@ -113,9 +113,9 @@ export default function MetaTierlistPage() {
 
                 {/* Intro */}
                 <div className="text-center space-y-4">
-                    <p className="text-white/30 text-[9px] uppercase font-black tracking-[1.5em] italic">Current Season // TWW S1 Analysis</p>
+                    <p className="text-white/30 text-[9px] uppercase font-black tracking-[1.5em] italic">Future Sight // Midnight Protocol</p>
                     <p className="text-white/60 text-[11px] max-w-2xl mx-auto leading-relaxed uppercase tracking-[0.2em] font-medium">
-                        Based on high-level M+ keys and tournament data from Raider.io and WoWhead.
+                        Projected Meta Analysis for TWW Season 3 & Midnight Expansion.
                     </p>
                 </div>
 

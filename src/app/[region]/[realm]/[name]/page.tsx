@@ -231,26 +231,47 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                             <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/40 to-transparent" />
                                         </div>
 
-                                        <div className="flex flex-wrap justify-center gap-6 md:gap-10 px-4">
+                                        <div className={cn(
+                                            "flex flex-wrap justify-center gap-6 md:gap-10 px-4",
+                                            cat.title === "Meta" && "flex-col items-center"
+                                        )}>
                                             {cat.links.map((link, li) => (
                                                 <a
                                                     key={li}
                                                     href={link.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="group relative p-4 md:p-5 flex items-center justify-center border border-white/5 hover:border-white/20 hover:bg-white/[0.02] active:scale-95 transition-all duration-500 rounded-2xl bg-white/[0.01]"
+                                                    className={cn(
+                                                        "group relative transition-all duration-500",
+                                                        cat.title === "Meta"
+                                                            ? "flex items-center gap-4 hover:translate-x-2"
+                                                            : "p-4 md:p-5 flex items-center justify-center border border-white/5 hover:border-white/20 hover:bg-white/[0.02] active:scale-95 rounded-2xl bg-white/[0.01]"
+                                                    )}
                                                 >
-                                                    <div className="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center">
+                                                    <div className={cn(
+                                                        "flex items-center justify-center",
+                                                        cat.title === "Meta" ? "w-10 h-10 md:w-12 md:h-12" : "w-8 h-8 md:w-12 md:h-12"
+                                                    )}>
                                                         <img
                                                             src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
                                                             alt={link.name}
                                                             className={cn(
                                                                 "w-full h-full object-contain filter brightness-110 saturate-150 transition-all duration-500",
-                                                                link.icon ? "rounded-md" : "opacity-80 group-hover:opacity-100"
+                                                                link.icon ? "rounded-full border border-white/10" : "opacity-80 group-hover:opacity-100"
                                                             )}
                                                         />
                                                     </div>
-                                                    <span className="md:hidden text-[7px] font-black tracking-widest absolute -bottom-4 opacity-30">{link.name}</span>
+                                                    {cat.title === "Meta" && (
+                                                        <span className={cn(
+                                                            "text-sm md:text-lg font-bold tracking-tight",
+                                                            link.name === "Devourer" ? "text-[#10b981]" : "text-white/80 group-hover:text-white"
+                                                        )}>
+                                                            {link.name}
+                                                        </span>
+                                                    )}
+                                                    {cat.title !== "Meta" && (
+                                                        <span className="md:hidden text-[7px] font-black tracking-widest absolute -bottom-4 opacity-30">{link.name}</span>
+                                                    )}
                                                 </a>
                                             ))}
                                         </div>

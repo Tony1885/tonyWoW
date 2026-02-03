@@ -109,30 +109,32 @@ export default function CharacterSelectPage() {
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-between pb-24 pt-16 px-6 pointer-events-none">
 
         {/* Header Links - Responsive Design */}
-        <div className="absolute top-6 md:top-12 left-4 md:left-12 right-4 md:right-12 flex justify-between items-start md:items-center pointer-events-auto">
-          <a
-            href="https://www.wowhead.com/news"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
-          >
-            <span className="flex items-center gap-1 md:gap-2">
-              <Compass className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:rotate-45 transition-transform" />
-              NEWS
-            </span>
-            <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
-          </a>
+        <div className="absolute top-6 md:top-12 left-4 md:left-12 right-4 md:right-12 flex justify-between items-start pointer-events-auto">
+          <div className="flex flex-col gap-4">
+            <a
+              href="https://www.wowhead.com/news"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
+            >
+              <span className="flex items-center gap-1 md:gap-2">
+                <Compass className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:rotate-45 transition-transform" />
+                NEWS
+              </span>
+              <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
+            </a>
 
-          <Link
-            href="/meta"
-            className="group flex flex-col items-center gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
-          >
-            <span className="flex items-center gap-1 md:gap-2">
-              <Trophy className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
-              META
-            </span>
-            <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Tierlist S1</span>
-          </Link>
+            <Link
+              href="/meta"
+              className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
+            >
+              <span className="flex items-center gap-1 md:gap-2">
+                <Trophy className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
+                META
+              </span>
+              <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Tierlist S1</span>
+            </Link>
+          </div>
 
           <button
             onClick={handleOpenCollectorHub}
@@ -144,19 +146,6 @@ export default function CharacterSelectPage() {
             </span>
             <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase text-right">Mounts • Achievs</span>
           </button>
-        </div>
-
-        {/* Top Hint */}
-        <div className="opacity-20 flex flex-col items-center gap-2">
-          <p className="text-[10px] tracking-[1.5em] font-black uppercase text-white">SCROLLEZ POUR CHOISIR</p>
-          <div className="w-1 h-8 bg-white/20 rounded-full overflow-hidden">
-            <motion.div
-              className="w-full bg-white"
-              animate={{ y: [0, 32] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-              style={{ height: '30%' }}
-            />
-          </div>
         </div>
 
         {/* Selected Character Label (Small & Class-Colored) */}
@@ -183,8 +172,6 @@ export default function CharacterSelectPage() {
               </div>
             </motion.div>
           </AnimatePresence>
-
-          <p className="text-[10px] tracking-[0.5em] font-black uppercase text-white/30">CLIQUEZ POUR ENTRER</p>
         </div>
 
       </div>
