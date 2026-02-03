@@ -107,30 +107,30 @@ export default function CharacterSelectPage() {
       {/* Floating UI Elements */}
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-between pb-24 pt-16 px-6 pointer-events-none">
 
-        {/* Header Links */}
-        <div className="absolute top-12 left-12 right-12 flex justify-between items-center pointer-events-auto">
+        {/* Header Links - Responsive Design */}
+        <div className="absolute top-6 md:top-12 left-4 md:left-12 right-4 md:right-12 flex justify-between items-start md:items-center pointer-events-auto">
           <a
             href="https://www.wowhead.com/news"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col items-start gap-1 text-[10px] font-black tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase"
+            className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
           >
-            <span className="flex items-center gap-2">
-              <Compass className="w-4 h-4 opacity-50 group-hover:rotate-45 transition-transform" />
-              WOWHEAD NEWS
+            <span className="flex items-center gap-1 md:gap-2">
+              <Compass className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:rotate-45 transition-transform" />
+              NEWS
             </span>
-            <span className="text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
+            <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
           </a>
 
           <button
             onClick={handleOpenCollectorHub}
-            className="group flex flex-col items-end gap-1 text-[10px] font-black tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase"
+            className="group flex flex-col items-end gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-1 md:gap-2 text-right">
               MODE COLLECTOR
-              <Sparkles className="w-4 h-4 opacity-50 group-hover:scale-125 transition-transform" />
+              <Sparkles className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
             </span>
-            <span className="text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Mounts • Achievs</span>
+            <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase text-right">Mounts • Achievs</span>
           </button>
         </div>
 
