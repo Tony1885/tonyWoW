@@ -84,7 +84,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
         const classColor = CLASS_COLORS[classStr] || "#ffffff";
         const encName = encodeURIComponent(decodedName);
 
-        const categories: { title: string; icon: any; links: WowLink[] }[] = [
+        const categories: { title: string; icon: React.ElementType | string; links: WowLink[] }[] = [
             {
                 title: "Performance",
                 icon: BarChart3,

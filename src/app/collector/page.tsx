@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
-    Compass,
     Trophy,
     Ghost,
     ChevronLeft,

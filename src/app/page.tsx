@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { Compass, Sparkles, Trophy } from "lucide-react";
 
 const CHARACTERS = [
