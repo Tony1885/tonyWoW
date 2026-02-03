@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Compass, Sparkles } from "lucide-react";
+import { Compass, Sparkles, Trophy } from "lucide-react";
 
 const CHARACTERS = [
   {
@@ -121,6 +122,17 @@ export default function CharacterSelectPage() {
             </span>
             <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
           </a>
+
+          <Link
+            href="/meta"
+            className="group flex flex-col items-center gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
+          >
+            <span className="flex items-center gap-1 md:gap-2">
+              <Trophy className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
+              META
+            </span>
+            <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Tierlist S1</span>
+          </Link>
 
           <button
             onClick={handleOpenCollectorHub}

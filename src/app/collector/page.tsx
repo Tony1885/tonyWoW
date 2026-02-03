@@ -87,14 +87,35 @@ export default function CollectorHub() {
 
             {/* Header Content - Responsive adjustment */}
             <header className="relative z-20 w-full flex justify-between items-center py-8 md:py-12 px-6 md:px-12">
-                <div className="hidden md:block w-40" />
+                <div className="hidden md:flex items-center gap-8">
+                    <button
+                        onClick={() => router.push('/')}
+                        className="flex flex-col items-center gap-2 opacity-40 hover:opacity-100 transition-all group scale-90 md:scale-100"
+                    >
+                        <div className="w-8 h-[1px] bg-white group-hover:w-12 transition-all" />
+                        <span className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase">ROSTER</span>
+                    </button>
+                </div>
 
+                {/* Mobile Roster Button */}
                 <button
                     onClick={() => router.push('/')}
-                    className="flex flex-col items-center gap-2 opacity-40 hover:opacity-100 transition-all group scale-90 md:scale-100"
+                    className="md:hidden flex items-center gap-2 opacity-40 hover:opacity-100 px-2"
                 >
-                    <div className="w-8 h-[1px] bg-white group-hover:w-12 transition-all" />
-                    <span className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase">ROSTER</span>
+                    <ChevronLeft className="w-4 h-4" />
+                    <span className="text-[8px] font-black tracking-widest uppercase">ROSTER</span>
+                </button>
+
+                {/* META LINK CENTERED */}
+                <button
+                    onClick={() => router.push('/meta')}
+                    className="group flex flex-col items-center gap-1 text-[8px] md:text-[10px] font-black tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-4"
+                >
+                    <span className="flex items-center gap-2">
+                        <Trophy className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
+                        META
+                    </span>
+                    <span className="hidden md:inline text-[7px] opacity-20 group-hover:opacity-40 tracking-[0.1em] lowercase">Tierlist</span>
                 </button>
 
                 <div className="flex flex-col items-end gap-1 text-[8px] md:text-[10px] font-black tracking-[0.4em] text-white transition-all uppercase">
@@ -109,21 +130,44 @@ export default function CollectorHub() {
             {/* Main Content Area */}
             <main className="relative z-10 flex-1 flex flex-col items-center justify-center gap-12 md:gap-20 px-6">
 
-                {/* Character Indicators */}
+                {/* Character Context / Name Display */}
+                <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in duration-700">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={selected.name + "-name"}
+                            initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+                            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                            exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+                            className="flex flex-col items-center"
+                        >
+                            <h2
+                                className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                                style={{ color: selected.color }}
+                            >
+                                {selected.name}
+                            </h2>
+                            <div className="flex items-center gap-4 mt-2">
+                                <div className="w-12 h-[1px] bg-white/10" />
+                                <span className="text-[10px] font-black tracking-[0.8em] text-white/20 uppercase">Azure // Identity</span>
+                                <div className="w-12 h-[1px] bg-white/10" />
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                {/* Character Indicators (Dots) */}
                 <div className="flex items-center gap-3 md:gap-4 bg-white/[0.02] border border-white/5 p-3 md:p-4 rounded-full backdrop-blur-3xl px-6">
-                    <span className="text-[7px] md:text-[8px] font-black tracking-[0.2em] text-white/20 uppercase mr-2 italic hidden md:inline">IDENTITÉ :</span>
                     {CHARACTERS.map((char, idx) => (
                         <button
                             key={char.name}
                             onClick={() => setSelectedIdx(idx)}
                             className={cn(
                                 "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-500 border border-white/10",
-                                selectedIdx === idx ? "scale-125 border-white/40 shadow-[0_0_10px_rgba(255,255,255,0.2)]" : "opacity-20 hover:opacity-100"
+                                selectedIdx === idx ? "scale-150 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.3)]" : "opacity-20 hover:opacity-100"
                             )}
                             style={{ backgroundColor: selectedIdx === idx ? char.color : 'transparent' }}
                         />
                     ))}
-                    <span className="text-[10px] font-black tracking-widest text-white/40 ml-2 uppercase md:hidden">{selected.name}</span>
                 </div>
 
                 {/* Grid Area - Responsive Grid */}

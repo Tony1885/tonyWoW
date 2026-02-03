@@ -5,7 +5,8 @@ import {
     ChevronLeft,
     ShieldAlert,
     BookOpen,
-    Sparkles
+    Sparkles,
+    Trophy
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -146,9 +147,9 @@ export default async function CharacterHubPage({ params }: PageProps) {
                         icon: "https://wow.zamimg.com/images/wow/icons/large/ability_demonhunter_specdmg.jpg",
                     },
                     {
-                        name: "Class",
-                        url: "https://murlok.io/demon-hunter",
-                        icon: "https://wow.zamimg.com/images/wow/icons/large/classicon_demonhunter.jpg",
+                        name: "Devourer",
+                        url: "https://murlok.io/demon-hunter/devourer/m+",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/inv_demonhunter_hero_soulcleaver.jpg",
                     }
                 ]
             });
@@ -168,8 +169,8 @@ export default async function CharacterHubPage({ params }: PageProps) {
 
                 <div className="relative z-10 w-full pt-4 pb-20 px-4 md:px-6 max-w-[1200px] flex flex-col items-center">
 
-                    {/* Navigation - Better mobile spacing */}
-                    <div className="w-full flex justify-between items-center mb-10 md:mb-16 px-2 md:px-4">
+                    {/* Top Navigation Bar */}
+                    <div className="w-full flex justify-between items-center mb-16 px-4">
                         <Link
                             href="/"
                             className="group inline-flex items-center gap-2 text-[8px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.6em] text-white/30 hover:text-white transition-all font-black"
@@ -178,16 +179,26 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             ROSTER
                         </Link>
 
-                        <Link
-                            href="/collector"
-                            className="group flex flex-col items-center gap-1 md:gap-2 text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] text-white/40 hover:text-white transition-all font-black"
-                        >
-                            <Sparkles className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-125 transition-transform" />
-                            <span>COLLECTOR</span>
-                        </Link>
+                        <div className="flex items-center gap-4 md:gap-12">
+                            <Link
+                                href="/meta"
+                                className="group flex flex-col items-center gap-1 md:gap-2 text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] text-white/40 hover:text-white transition-all font-black"
+                            >
+                                <Trophy className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-125 transition-transform" />
+                                <span>META</span>
+                            </Link>
 
-                        <div className="text-[8px] md:text-[10px] font-black tracking-[0.4em] md:tracking-[0.6em] text-white/20 uppercase whitespace-nowrap">
-                            {realm.toUpperCase()}
+                            <Link
+                                href="/collector"
+                                className="group flex flex-col items-center gap-1 md:gap-2 text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] text-white/40 hover:text-white transition-all font-black"
+                            >
+                                <Sparkles className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-125 transition-transform" />
+                                <span>COLLECTOR</span>
+                            </Link>
+                        </div>
+
+                        <div className="text-[8px] md:text-[10px] font-black tracking-[0.4em] md:tracking-[0.6em] text-white/20 uppercase">
+                            <span>{realm.toUpperCase()}</span>
                         </div>
                     </div>
 
