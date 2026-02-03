@@ -108,8 +108,12 @@ export default async function CharacterHubPage({ params }: PageProps) {
             }
         ];
 
+        // Explicitly check for Mamènne to force the Meta category
+        const isMamenne = lowerName.includes("mamènne") || lowerName.includes("mamenne");
+        const isMoussman = lowerName.includes("moussman");
+
         // Specific Spec Logos for Monk and Demon Hunter (Murlok.io)
-        if (classStr.includes("monk")) {
+        if (classStr.includes("monk") || classStr.includes("moine") || isMoussman) {
             categories.push({
                 title: "Meta",
                 icon: BookOpen,
@@ -131,7 +135,9 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     }
                 ]
             });
-        } else if (classStr.includes("demon hunter")) {
+        }
+
+        if (classStr.includes("demon hunter") || classStr.includes("chasseur de démons") || isMamenne) {
             categories.push({
                 title: "Meta",
                 icon: BookOpen,

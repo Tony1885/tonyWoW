@@ -132,7 +132,7 @@ export default function CharacterSelectPage() {
                 <Trophy className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
                 META
               </span>
-              <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Tierlist S1</span>
+              <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Midnight / S3</span>
             </Link>
           </div>
 
