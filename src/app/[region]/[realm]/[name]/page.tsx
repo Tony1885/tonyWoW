@@ -128,7 +128,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
         }
 
         return (
-            <div className="relative min-h-screen w-full flex flex-col items-center overflow-x-hidden pt-12 bg-black">
+            <div className="relative min-h-screen w-full flex flex-col items-center bg-black overflow-x-hidden pt-12">
                 {/* Dynamic Background Glow Overlay */}
                 <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
                     <div
@@ -137,14 +137,17 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     />
                 </div>
 
-                <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1900px]">
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.5em] text-white/50 hover:text-white transition-all mb-12 group ml-10 font-black"
-                    >
-                        <ChevronLeft className="w-5 h-5 group-hover:-translate-x-2 transition-transform" />
-                        Retour au Menu
-                    </Link>
+                <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1200px] flex flex-col items-center">
+
+                    <div className="w-full flex justify-start mb-12">
+                        <Link
+                            href="/"
+                            className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.5em] text-white/50 hover:text-white transition-all group font-black"
+                        >
+                            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-2 transition-transform" />
+                            Menu
+                        </Link>
+                    </div>
 
                     {!character ? (
                         <div className="text-center py-32 glass border border-white/5 rounded-lg backdrop-blur-3xl max-w-2xl mx-auto mt-20">
@@ -154,71 +157,69 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             <Link href="/" className="inline-block px-12 py-5 bg-white text-black text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
                         </div>
                     ) : (
-                        <div className="w-full flex flex-col lg:flex-row gap-12 items-start justify-center pt-20">
+                        <div className="w-full flex flex-col items-center space-y-16">
 
-                            {/* Main Content Area */}
-                            <div className="flex-1 flex flex-col items-center space-y-20 w-full">
-
-                                {/* Character Name & Realm (Minimalist Title) */}
-                                <div className="text-center space-y-2">
-                                    <h2 className="text-white/20 text-[10px] uppercase font-black tracking-[1em]">SYSTEM COMMAND // SYNCHRONIZED</h2>
-                                    <div className="flex items-center justify-center gap-4 text-xs font-black tracking-[0.4em] text-white/40">
-                                        <span>{realm.toUpperCase()}</span>
-                                        <span className="w-1 h-1 rounded-full bg-white/20" />
-                                        <span>{region.toUpperCase()}</span>
-                                    </div>
+                            {/* Header Info */}
+                            <div className="text-center space-y-3">
+                                <div className="flex items-center justify-center gap-4 text-[10px] font-black tracking-[0.6em] text-white/20 uppercase">
+                                    <span>{realm.toUpperCase()}</span>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                                    <span>{region.toUpperCase()}</span>
                                 </div>
-
-                                <div className="w-full shadow-[0_50px_120px_rgba(0,0,0,0.9)] max-w-lg border border-white/10 hover:border-white/20 rounded-xl overflow-hidden transition-all duration-700 mx-auto">
-                                    <CharacterCard character={character} />
-                                </div>
-
-                                <div className="w-full space-y-20 pt-12 max-w-sm mx-auto">
-                                    {categories.map((cat, i) => (
-                                        <div key={i} className="flex flex-col items-center space-y-10">
-                                            <div className="flex items-center gap-6 w-full opacity-60">
-                                                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                                                <h2 className="text-[10px] uppercase tracking-[0.6em] text-white font-black whitespace-nowrap">
-                                                    {cat.title}
-                                                </h2>
-                                                <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/20 to-transparent" />
-                                            </div>
-
-                                            <div className="flex flex-wrap justify-center gap-8">
-                                                {cat.links.map((link, li) => (
-                                                    <a
-                                                        key={li}
-                                                        href={link.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="group relative glass-morphism p-6 flex items-center justify-center border border-white/10 hover:border-white/50 hover:bg-white/[0.05] hover:scale-125 transition-all duration-500 backdrop-blur-3xl rounded-2xl shadow-2xl"
-                                                    >
-                                                        <div className="w-14 h-14 flex items-center justify-center">
-                                                            <img
-                                                                src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
-                                                                alt={link.name}
-                                                                className={cn(
-                                                                    "w-full h-full object-contain filter brightness-110",
-                                                                    link.icon ? "rounded-md" : "saturate-150"
-                                                                )}
-                                                            />
-                                                        </div>
-                                                    </a>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                <h2 className="text-white/30 text-[9px] uppercase font-black tracking-[1.2em]">Azure Protocol // Connected</h2>
                             </div>
 
-                            {/* Right Side: Raider.io Widget */}
-                            <div className="w-full lg:w-[360px] flex justify-end px-0 mt-20 lg:mt-0 lg:sticky lg:top-24">
-                                <div className="w-full max-w-[340px] border border-white/10 rounded-xl overflow-hidden backdrop-blur-3xl shadow-2xl">
+                            {/* Centered Character Card */}
+                            <div className="w-full shadow-[0_50px_100px_rgba(0,0,0,1)] max-w-lg border border-white/10 rounded-2xl overflow-hidden transition-all duration-700 bg-zinc-900/40 backdrop-blur-3xl">
+                                <CharacterCard character={character} />
+                            </div>
+
+                            {/* Centered Links Categories */}
+                            <div className="w-full flex flex-col items-center space-y-16 pt-8">
+                                {categories.map((cat, i) => (
+                                    <div key={i} className="flex flex-col items-center space-y-10 w-full max-w-xl">
+                                        <div className="flex items-center gap-6 w-full opacity-40">
+                                            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                                            <h2 className="text-[10px] uppercase tracking-[0.5em] text-white font-black whitespace-nowrap">
+                                                {cat.title}
+                                            </h2>
+                                            <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/40 to-transparent" />
+                                        </div>
+
+                                        <div className="flex flex-wrap justify-center gap-10">
+                                            {cat.links.map((link, li) => (
+                                                <a
+                                                    key={li}
+                                                    href={link.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="group relative p-6 flex items-center justify-center border border-white/10 hover:border-white/40 hover:bg-white/[0.05] hover:scale-125 transition-all duration-500 bg-white/[0.02] backdrop-blur-3xl rounded-3xl shadow-2xl"
+                                                >
+                                                    <div className="w-14 h-14 flex items-center justify-center">
+                                                        <img
+                                                            src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
+                                                            alt={link.name}
+                                                            className={cn(
+                                                                "w-full h-full object-contain filter brightness-110",
+                                                                link.icon ? "rounded-md" : "saturate-150"
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Centered Raider.io Widget at the Bottom */}
+                            <div className="w-full flex flex-col items-center py-12">
+                                <div className="w-full max-w-[340px] border border-white/10 rounded-2xl overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_30px_80px_rgba(0,0,0,0.8)]">
                                     <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
-                                        <span>MYTHIC+ LOGS</span>
+                                        <span>MYTHIC+ DATA STREAM</span>
                                         <BarChart3 className="w-4 h-4 text-white/20" />
                                     </div>
-                                    <div className="relative w-full h-[540px] overflow-hidden bg-black/20">
+                                    <div className="relative w-full h-[540px] overflow-hidden">
                                         <iframe
                                             src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
                                             style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
@@ -230,8 +231,8 @@ export default async function CharacterHubPage({ params }: PageProps) {
                         </div>
                     )}
 
-                    <footer className="mt-64 pb-20 text-center opacity-10">
-                        <p className="text-[10px] tracking-[1.2em] font-black uppercase">Protocol Azure // End Observation</p>
+                    <footer className="mt-40 pb-20 text-center opacity-10">
+                        <p className="text-[9px] tracking-[1.5em] font-black uppercase">End Of Protocol // Session Closed</p>
                     </footer>
                 </div>
             </div>

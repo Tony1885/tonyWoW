@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -32,83 +33,116 @@ const CHARACTERS = [
 ];
 
 export default function CharacterSelectPage() {
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
   const router = useRouter();
+  const selected = CHARACTERS[selectedIdx];
 
-  const handleSelect = (char: typeof CHARACTERS[0]) => {
-    const encodedName = encodeURIComponent(char.name.toLowerCase());
-    router.push(`/${char.region}/${char.realm}/${encodedName}`);
-  };
+  const handleEnterWorld = useCallback(() => {
+    const encodedName = encodeURIComponent(selected.name.toLowerCase());
+    router.push(`/${selected.region}/${selected.realm}/${encodedName}`);
+  }, [router, selected]);
+
+  // Handle Wheel Scroll
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (isScrolling) return;
+
+      setIsScrolling(true);
+      if (e.deltaY > 0) {
+        setSelectedIdx((prev) => (prev + 1) % CHARACTERS.length);
+      } else if (e.deltaY < 0) {
+        setSelectedIdx((prev) => (prev - 1 + CHARACTERS.length) % CHARACTERS.length);
+      }
+
+      setTimeout(() => setIsScrolling(false), 500);
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [isScrolling]);
 
   return (
-    <div className="relative h-screen w-full bg-[#050505] overflow-hidden flex flex-col md:flex-row select-none">
+    <div
+      className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center select-none cursor-pointer"
+      onClick={handleEnterWorld}
+    >
 
-      {/* Dynamic Background Split Glow */}
-      <div className="absolute inset-0 z-0 flex pointer-events-none">
-        <div className="flex-1 bg-gradient-to-r from-[#00FF96]/5 to-transparent h-full" />
-        <div className="flex-1 bg-gradient-to-l from-[#F58CBA]/5 to-transparent h-full" />
+      {/* Background Cinematic Render (Full Page) */}
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selected.name + "-bg-img"}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full h-full relative"
+          >
+            <img
+              src={selected.render}
+              alt=""
+              className="w-full h-full object-contain md:object-cover transition-transform duration-700"
+              style={{ filter: 'brightness(0.9) saturate(1.2)' }}
+            />
+
+            {/* Vignette & Gradients */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80 opacity-70" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent opacity-40" />
+
+            {/* Dynamic Color Overlay */}
+            <div
+              className="absolute inset-0 opacity-10 mix-blend-color transition-colors duration-1000"
+              style={{ backgroundColor: selected.color }}
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {CHARACTERS.map((char, idx) => (
-        <motion.div
-          key={char.name}
-          initial={{ opacity: 0, x: idx === 0 ? -100 : 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative flex-1 group cursor-pointer overflow-hidden border-x border-white/5"
-          onClick={() => handleSelect(char)}
-        >
-          {/* Background Image with Hover Scaling */}
-          <div className="absolute inset-0 z-0 transition-transform duration-1000 ease-out group-hover:scale-110">
-            <img
-              src={char.render}
-              alt={char.name}
-              className="w-full h-full object-contain md:object-cover opacity-40 group-hover:opacity-70 transition-opacity duration-700"
-              style={{ filter: 'brightness(1.1) saturate(1.2)' }}
-            />
+      {/* Floating UI Elements */}
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-between pb-24 pt-16 px-6 pointer-events-none">
 
-            {/* Character Color Overlay */}
-            <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none"
-              style={{ backgroundColor: char.color }}
+        {/* Top Hint */}
+        <div className="opacity-20 flex flex-col items-center gap-2">
+          <p className="text-[10px] tracking-[1.5em] font-black uppercase text-white">SCROLLEZ POUR CHOISIR</p>
+          <div className="w-1 h-8 bg-white/20 rounded-full overflow-hidden">
+            <motion.div
+              className="w-full bg-white"
+              animate={{ y: [0, 32] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+              style={{ height: '30%' }}
             />
           </div>
+        </div>
 
-          {/* Vignettes for Each Side */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 z-10" />
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-
-          {/* Character Info (Appears on Hover or Bottom) */}
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-24 px-6 text-center">
+        {/* Selected Character Label (Small & Class-Colored) */}
+        <div className="w-full flex flex-col items-center gap-6 relative z-40">
+          <AnimatePresence mode="wait">
             <motion.div
-              className="flex flex-col items-center gap-4 translate-y-12 group-hover:translate-y-0 transition-transform duration-500"
+              key={selected.name + "-label"}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center gap-2"
             >
-              <div className="h-1 w-20 rounded-full mb-4 opacity-0 group-hover:opacity-100 transition-all" style={{ backgroundColor: char.color }} />
-              <h2 className="text-6xl md:text-8xl font-black italic tracking-tighter text-white uppercase drop-shadow-2xl">
-                {char.name}
-              </h2>
-              <div className="bg-black/80 backdrop-blur-3xl border border-white/10 px-8 py-3 rounded-full shadow-2xl scale-90 group-hover:scale-110 transition-transform duration-500">
-                <span className="text-sm md:text-base font-black tracking-[0.5em] uppercase" style={{ color: char.color }}>
-                  {char.spec}
+              <div
+                className="px-10 py-5 rounded-lg border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col items-center transition-all duration-500"
+                style={{ backgroundColor: selected.color }}
+              >
+                <span className="text-3xl md:text-5xl font-black italic tracking-widest uppercase text-black">
+                  {selected.name}
+                </span>
+                <span className="text-[10px] font-black tracking-[0.5em] uppercase text-black/60 mt-1">
+                  {selected.spec}
                 </span>
               </div>
             </motion.div>
-          </div>
+          </AnimatePresence>
 
-          {/* Enter Indicator */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-700 z-30 pointer-events-none">
-            <div className="w-24 h-24 rounded-full border border-white/20 flex items-center justify-center animate-pulse">
-              <span className="text-[10px] font-black tracking-widest uppercase text-white/40">ENTER</span>
-            </div>
-          </div>
-        </motion.div>
-      ))}
+          <p className="text-[10px] tracking-[0.5em] font-black uppercase text-white/30">CLIQUEZ POUR ENTRER</p>
+        </div>
 
-      {/* Vertical Separation Line */}
-      <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent hidden md:block" />
-
-      {/* Decorative HUD Details */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 z-40 text-center pointer-events-none">
-        <p className="text-[10px] tracking-[1.5em] font-black uppercase text-white/20">CHOISISSEZ VOTRE CHAMPION</p>
       </div>
 
     </div>
