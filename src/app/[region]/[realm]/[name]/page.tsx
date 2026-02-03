@@ -4,7 +4,6 @@ import {
     BarChart3,
     ChevronLeft,
     ShieldAlert,
-    Trophy,
     BookOpen,
     Sparkles
 } from "lucide-react";
@@ -52,10 +51,10 @@ const CHARACTER_IDS: Record<string, string> = {
 function safeDecode(val: string) {
     if (!val) return "";
     try {
-        // Handle double encoding and normalize to NFC for consistency with Blizzard/RIO APIs
-        return decodeURIComponent(val).normalize('NFC');
+        // Normalize and trim properly
+        return decodeURIComponent(val).normalize('NFC').trim();
     } catch {
-        return val.normalize('NFC');
+        return val.normalize('NFC').trim();
     }
 }
 
@@ -68,17 +67,18 @@ export default async function CharacterHubPage({ params }: PageProps) {
         const realm = String(p.realm).toLowerCase();
         const nameParam = String(p.name);
 
-        // Crucial: Normalize name before any logic
+        // Normalize name
         const decodedName = safeDecode(nameParam);
         const lowerName = decodedName.toLowerCase();
 
-        // Fetch character data with normalized name
+        // Fetch character data
         const character = await getCharacterProfile(region, realm, decodedName);
 
         const classKey = character?.class?.toLowerCase() || "";
         const classColor = CLASS_COLORS[classKey] || "#ffffff";
         const encName = encodeURIComponent(decodedName);
 
+        // Filter categories: Removed "Collections" as requested by removing SimpleArmory here
         const categories: { title: string; icon: any; links: WowLink[] }[] = [
             {
                 title: "Performance",
@@ -98,17 +98,6 @@ export default async function CharacterHubPage({ params }: PageProps) {
                         name: "Logs",
                         url: `https://fr.warcraftlogs.com/character/${region}/${realm}/${encName}`,
                         domain: "warcraftlogs.com",
-                    }
-                ]
-            },
-            {
-                title: "Collections",
-                icon: Trophy,
-                links: [
-                    {
-                        name: "SimpleArmory",
-                        url: `https://simplearmory.com/#/${region}/${realm}/${encName}/collectable/mounts`,
-                        domain: "simplearmory.com",
                     }
                 ]
             }
