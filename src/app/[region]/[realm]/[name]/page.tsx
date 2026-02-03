@@ -1,10 +1,8 @@
 import { getCharacterProfile } from "@/lib/wow";
 import CharacterCard from "@/components/CharacterCard";
+import MythicPlusProgression from "@/components/MythicPlusProgression";
 import {
     BarChart3,
-    ExternalLink,
-    Trophy,
-    BookOpen,
     ChevronLeft,
     ShieldAlert
 } from "lucide-react";
@@ -73,60 +71,6 @@ export default async function CharacterHubPage({ params }: PageProps) {
 
         const encName = encodeURIComponent(name);
 
-        const categories: { title: string; icon: any; links: WowLink[] }[] = [
-            {
-                title: "Performance",
-                icon: BarChart3,
-                links: [
-                    {
-                        name: "Raider.io",
-                        url: `https://raider.io/characters/${region}/${realm}/${encName}`,
-                        domain: "raider.io",
-                    },
-                    {
-                        name: "Blizzard",
-                        url: `https://worldofwarcraft.blizzard.com/fr-fr/character/${region}/${realm}/${encName}`,
-                        domain: "blizzard.com",
-                    },
-                    {
-                        name: "Logs",
-                        url: `https://fr.warcraftlogs.com/character/${region}/${realm}/${encName}`,
-                        domain: "warcraftlogs.com",
-                    }
-                ]
-            },
-            {
-                title: "Collections",
-                icon: Trophy,
-                links: [
-                    {
-                        name: "SimpleArmory",
-                        url: `https://simplearmory.com/#/${region}/${realm}/${encName}/collectable/mounts`,
-                        domain: "simplearmory.com",
-                    }
-                ]
-            }
-        ];
-
-        if (classKey === "monk") {
-            categories.push({
-                title: "Meta",
-                icon: BookOpen,
-                links: [
-                    {
-                        name: "Brewmaster",
-                        url: "https://murlok.io/monk/brewmaster/m+",
-                        icon: "https://wow.zamimg.com/images/wow/icons/large/spell_monk_brewmaster_spec.jpg",
-                    },
-                    {
-                        name: "Mistweaver",
-                        url: "https://murlok.io/monk/mistweaver/m+",
-                        icon: "https://wow.zamimg.com/images/wow/icons/large/spell_monk_mistweaver_spec.jpg",
-                    }
-                ]
-            });
-        }
-
         return (
             <div className="relative min-h-screen w-full flex flex-col items-center bg-black overflow-x-hidden pt-12">
                 {/* Dynamic Background Glow Overlay */}
@@ -137,7 +81,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     />
                 </div>
 
-                <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1200px] flex flex-col items-center">
+                <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1400px] flex flex-col items-center">
 
                     <div className="w-full flex justify-start mb-12">
                         <Link
@@ -145,7 +89,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.5em] text-white/50 hover:text-white transition-all group font-black"
                         >
                             <ChevronLeft className="w-5 h-5 group-hover:-translate-x-2 transition-transform" />
-                            Menu
+                            Menu Principal
                         </Link>
                     </div>
 
@@ -157,7 +101,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             <Link href="/" className="inline-block px-12 py-5 bg-white text-black text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
                         </div>
                     ) : (
-                        <div className="w-full flex flex-col items-center space-y-16">
+                        <div className="w-full flex flex-col items-center space-y-12">
 
                             {/* Header Info */}
                             <div className="text-center space-y-3">
@@ -166,73 +110,46 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                     <span className="w-1.5 h-1.5 rounded-full bg-white/10" />
                                     <span>{region.toUpperCase()}</span>
                                 </div>
-                                <h2 className="text-white/30 text-[9px] uppercase font-black tracking-[1.2em]">Azure Protocol // Connected</h2>
+                                <h2 className="text-white/30 text-[9px] uppercase font-black tracking-[1.2em]">Azure Analytics // Real-Time Stream</h2>
                             </div>
 
-                            {/* Centered Character Card */}
-                            <div className="w-full shadow-[0_50px_100px_rgba(0,0,0,1)] max-w-lg border border-white/10 rounded-2xl overflow-hidden transition-all duration-700 bg-zinc-900/40 backdrop-blur-3xl">
-                                <CharacterCard character={character} />
-                            </div>
+                            {/* Main Content Layout */}
+                            <div className="w-full flex flex-col lg:flex-row gap-8 items-start justify-center">
 
-                            {/* Centered Links Categories */}
-                            <div className="w-full flex flex-col items-center space-y-16 pt-8">
-                                {categories.map((cat, i) => (
-                                    <div key={i} className="flex flex-col items-center space-y-10 w-full max-w-xl">
-                                        <div className="flex items-center gap-6 w-full opacity-40">
-                                            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                                            <h2 className="text-[10px] uppercase tracking-[0.5em] text-white font-black whitespace-nowrap">
-                                                {cat.title}
-                                            </h2>
-                                            <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/40 to-transparent" />
-                                        </div>
-
-                                        <div className="flex flex-wrap justify-center gap-10">
-                                            {cat.links.map((link, li) => (
-                                                <a
-                                                    key={li}
-                                                    href={link.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="group relative p-6 flex items-center justify-center border border-white/10 hover:border-white/40 hover:bg-white/[0.05] hover:scale-125 transition-all duration-500 bg-white/[0.02] backdrop-blur-3xl rounded-3xl shadow-2xl"
-                                                >
-                                                    <div className="w-14 h-14 flex items-center justify-center">
-                                                        <img
-                                                            src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
-                                                            alt={link.name}
-                                                            className={cn(
-                                                                "w-full h-full object-contain filter brightness-110",
-                                                                link.icon ? "rounded-md" : "saturate-150"
-                                                            )}
-                                                        />
-                                                    </div>
-                                                </a>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Centered Raider.io Widget at the Bottom */}
-                            <div className="w-full flex flex-col items-center py-12">
-                                <div className="w-full max-w-[340px] border border-white/10 rounded-2xl overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_30px_80px_rgba(0,0,0,0.8)]">
-                                    <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
-                                        <span>MYTHIC+ DATA STREAM</span>
-                                        <BarChart3 className="w-4 h-4 text-white/20" />
-                                    </div>
-                                    <div className="relative w-full h-[540px] overflow-hidden">
-                                        <iframe
-                                            src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
-                                            style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
-                                        />
+                                {/* Left Side: Character Card */}
+                                <div className="w-full lg:w-auto lg:sticky lg:top-24">
+                                    <div className="w-full max-w-lg mx-auto shadow-[0_50px_100px_rgba(0,0,0,1)] border border-white/10 rounded-2xl overflow-hidden bg-zinc-900/40 backdrop-blur-3xl">
+                                        <CharacterCard character={character} />
                                     </div>
                                 </div>
+
+                                {/* Right Side: Raider.io Widget */}
+                                <div className="w-full lg:w-auto lg:sticky lg:top-24">
+                                    <div className="w-full max-w-[340px] mx-auto border border-white/10 rounded-2xl overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_30px_80px_rgba(0,0,0,0.8)]">
+                                        <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
+                                            <span>MYTHIC+ RUNS</span>
+                                            <BarChart3 className="w-4 h-4 text-white/20" />
+                                        </div>
+                                        <div className="relative w-full h-[540px] overflow-hidden">
+                                            <iframe
+                                                src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
+                                                style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Bottom: Large Progression Card (From Screenshot) */}
+                            <div className="w-full flex justify-center pt-8">
+                                <MythicPlusProgression character={character} />
                             </div>
 
                         </div>
                     )}
 
                     <footer className="mt-40 pb-20 text-center opacity-10">
-                        <p className="text-[9px] tracking-[1.5em] font-black uppercase">End Of Protocol // Session Closed</p>
+                        <p className="text-[9px] tracking-[1.5em] font-black uppercase">End Of Analysis // Azure Output</p>
                     </footer>
                 </div>
             </div>

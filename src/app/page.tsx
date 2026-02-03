@@ -23,11 +23,11 @@ const CHARACTERS = [
     realm: "ysondre",
     region: "eu",
     level: 80,
-    class: "Paladin",
-    race: "Humain",
+    class: "Demon Hunter",
+    race: "Elfe de la nuit",
     faction: "Alliance",
-    spec: "Vindicte",
-    color: "#F58CBA",
+    spec: "Vengeance",
+    color: "#A330C9", // DH Purple
     render: "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main-raw.png"
   }
 ];
