@@ -41,17 +41,31 @@ export interface WowCharacter {
     };
 }
 
+/**
+ * Fetches a character profile from Raider.io.
+ * Handles accent normalization and correct URI encoding.
+ */
 export async function getCharacterProfile(region: string, realm: string, name: string): Promise<WowCharacter | null> {
     try {
-        const r = String(region).toLowerCase();
-        const rl = String(realm).toLowerCase();
-        const n = String(name).toLowerCase();
+        // Normalize and clean inputs
+        const r = region.toLowerCase().trim();
+        const rl = realm.toLowerCase().trim();
+
+        // Ensure name is decoded before re-encoding to avoid double encoding bug
+        let n = name;
+        try {
+            n = decodeURIComponent(name);
+        } catch {
+            // ignore if already decoded
+        }
+
+        // Final normalization for character names (NFC is preferred by Blizzard/RIO)
+        n = n.normalize('NFC').toLowerCase().trim();
 
         const encodedName = encodeURIComponent(n);
         const encodedRealm = encodeURIComponent(rl);
         const encodedRegion = encodeURIComponent(r);
 
-        // Fetching more fields for progression card
         const fields = [
             "gear",
             "mythic_plus_scores_by_season:current",
@@ -61,7 +75,7 @@ export async function getCharacterProfile(region: string, realm: string, name: s
         const url = `https://raider.io/api/v1/characters/profile?region=${encodedRegion}&realm=${encodedRealm}&name=${encodedName}&fields=${fields}`;
 
         const response = await fetch(url, {
-            next: { revalidate: 60 },
+            next: { revalidate: 300 }, // Cache for 5 mins
             headers: {
                 'Accept': 'application/json',
                 'User-Agent': 'WoW-Dashboard-Agent/1.0'
@@ -69,6 +83,7 @@ export async function getCharacterProfile(region: string, realm: string, name: s
         });
 
         if (!response.ok) {
+            console.warn(`Profile Fetch Failure [${response.status}] for ${n}@${rl}`);
             return null;
         }
 
