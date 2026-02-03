@@ -41,6 +41,12 @@ const CLASS_COLORS: Record<string, string> = {
     "evoker": "#33937F",
 };
 
+const CHARACTER_IDS: Record<string, string> = {
+    "moussman": "288772995",
+    "mamènne": "284898236", // Verified ID candidate
+    "mamenne": "284898236"
+};
+
 function safeDecode(val: string) {
     if (!val) return "";
     try {
@@ -123,7 +129,26 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     }
                 ]
             });
+        } else if (classKey === "demon hunter") {
+            categories.push({
+                title: "Meta",
+                icon: BookOpen,
+                links: [
+                    {
+                        name: "Vengeance",
+                        url: "https://murlok.io/demon-hunter/vengeance/m+",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/ability_demonhunter_spectatortank.jpg",
+                    },
+                    {
+                        name: "Havoc",
+                        url: "https://murlok.io/demon-hunter/havoc/m+",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/ability_demonhunter_specdmg.jpg",
+                    }
+                ]
+            });
         }
+
+        const charId = CHARACTER_IDS[decodedName] || "0";
 
         return (
             <div className="relative min-h-screen w-full flex flex-col items-center bg-black overflow-x-hidden pt-12">
@@ -168,7 +193,9 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             </div>
 
                             {/* Centered Character Card */}
-                            <div className="w-full shadow-[0_50px_100px_rgba(0,0,0,1)] max-w-lg border border-white/10 rounded-2xl overflow-hidden transition-all duration-700 bg-zinc-900/40 backdrop-blur-3xl">
+                            <div
+                                className="w-full shadow-[0_50px_100px_rgba(0,0,0,1)] max-w-lg border border-white/10 rounded-2xl overflow-hidden transition-all duration-700 bg-zinc-900/40 backdrop-blur-3xl animate-in zoom-in-95 duration-700"
+                            >
                                 <CharacterCard character={character} />
                             </div>
 
@@ -227,7 +254,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                     </div>
                                     <div className="relative w-full h-[540px] overflow-hidden">
                                         <iframe
-                                            src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
+                                            src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${charId}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
                                             style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
                                         />
                                     </div>
@@ -249,7 +276,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
             <div className="min-h-screen flex items-center justify-center text-center p-10 bg-black text-white px-20">
                 <div>
                     <h1 className="text-4xl font-black italic uppercase text-white/20 tracking-tighter">Erreur Critique de Sync</h1>
-                    <Link href="/" className="mt-12 inline-block px-10 py-5 bg-white text-black font-black tracking-widest uppercase italic">Reconnecter au Hub</Link>
+                    <Link href="/" className="mt-12 inline-block px-10 py-5 bg-white text-black font-black tracking-widest uppercase italic border border-white/20">Reconnecter au Hub</Link>
                 </div>
             </div>
         );

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Compass } from "lucide-react";
 
 const CHARACTERS = [
   {
@@ -27,7 +28,7 @@ const CHARACTERS = [
     race: "Elfe de la nuit",
     faction: "Alliance",
     spec: "Vengeance",
-    color: "#A330C9", // DH Purple
+    color: "#A330C9",
     render: "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main-raw.png"
   }
 ];
@@ -42,6 +43,11 @@ export default function CharacterSelectPage() {
     const encodedName = encodeURIComponent(selected.name.toLowerCase());
     router.push(`/${selected.region}/${selected.realm}/${encodedName}`);
   }, [router, selected]);
+
+  const handleOpenMountHub = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    router.push('/mounts');
+  }, [router]);
 
   // Handle Wheel Scroll
   useEffect(() => {
@@ -82,8 +88,7 @@ export default function CharacterSelectPage() {
             <img
               src={selected.render}
               alt=""
-              className="w-full h-full object-contain md:object-cover transition-transform duration-700"
-              style={{ filter: 'brightness(0.9) saturate(1.2)' }}
+              className="w-full h-full object-contain md:object-cover transition-transform duration-700 saturate-[1.2] brightness-90"
             />
 
             {/* Vignette & Gradients */}
@@ -113,6 +118,22 @@ export default function CharacterSelectPage() {
               style={{ height: '30%' }}
             />
           </div>
+        </div>
+
+        {/* Mount Hub Launch Button (Center-Left) */}
+        <div className="absolute left-10 top-1/2 -translate-y-1/2 flex flex-col gap-4 pointer-events-auto">
+          <button
+            onClick={handleOpenMountHub}
+            className="group flex flex-col items-center gap-6 p-4 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all duration-700 hover:scale-110"
+          >
+            <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:border-black/20">
+              <Compass className="w-6 h-6 animate-spin-slow" />
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[9px] font-black tracking-widest uppercase opacity-40 group-hover:opacity-100">Mount Hunting</span>
+              <span className="text-[8px] font-bold tracking-[0.4em] uppercase opacity-20 group-hover:opacity-60">Collectables</span>
+            </div>
+          </button>
         </div>
 
         {/* Selected Character Label (Small & Class-Colored) */}
