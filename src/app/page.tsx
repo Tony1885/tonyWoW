@@ -109,31 +109,18 @@ export default function CharacterSelectPage() {
 
         {/* Header Links - Responsive Design */}
         <div className="absolute top-6 md:top-12 left-4 md:left-12 right-4 md:right-12 flex justify-between items-start pointer-events-auto">
-          <div className="flex flex-col gap-4">
-            <a
-              href="https://www.wowhead.com/news"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
-            >
-              <span className="flex items-center gap-1 md:gap-2">
-                <Compass className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:rotate-45 transition-transform" />
-                NEWS
-              </span>
-              <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
-            </a>
-
-            <Link
-              href="/meta"
-              className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
-            >
-              <span className="flex items-center gap-1 md:gap-2">
-                <Trophy className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
-                META
-              </span>
-              <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Midnight / S3</span>
-            </Link>
-          </div>
+          <a
+            href="https://www.wowhead.com/news"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
+          >
+            <span className="flex items-center gap-1 md:gap-2">
+              <Compass className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:rotate-45 transition-transform" />
+              NEWS
+            </span>
+            <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
+          </a>
 
           <button
             onClick={handleOpenCollectorHub}
@@ -147,7 +134,22 @@ export default function CharacterSelectPage() {
           </button>
         </div>
 
-        {/* Selected Character Label (Small & Class-Colored) */}
+        {/* Bottom Left Meta Link */}
+        <div className="absolute bottom-6 md:bottom-12 left-4 md:left-12 pointer-events-auto">
+          <Link
+            href="/meta"
+            className="group flex flex-col items-start gap-1 text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase px-2 py-1"
+          >
+            <span className="flex items-center gap-1 md:gap-2">
+              <Trophy className="w-3 h-3 md:w-4 md:h-4 opacity-50 group-hover:scale-125 transition-transform" />
+              META
+            </span>
+            <span className="hidden md:inline text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Midnight / S3</span>
+          </Link>
+        </div>
+
+
+        {/* Selected Character Label (Small & Clean Monochome) */}
         <div className="w-full flex flex-col items-center gap-6 relative z-40">
           <AnimatePresence mode="wait">
             <motion.div
@@ -158,14 +160,11 @@ export default function CharacterSelectPage() {
               transition={{ duration: 0.5 }}
               className="flex flex-col items-center gap-2"
             >
-              <div
-                className="px-10 py-5 rounded-lg border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col items-center transition-all duration-500"
-                style={{ backgroundColor: selected.color }}
-              >
-                <span className="text-3xl md:text-5xl font-black italic tracking-widest uppercase text-black">
+              <div className="px-10 py-5 rounded-lg border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col items-center transition-all duration-500 bg-white/5 backdrop-blur-md">
+                <span className="text-3xl md:text-5xl font-black italic tracking-widest uppercase text-white drop-shadow-2xl">
                   {selected.name}
                 </span>
-                <span className="text-[10px] font-black tracking-[0.5em] uppercase text-black/60 mt-1">
+                <span className="text-[10px] font-black tracking-[0.5em] uppercase text-white/40 mt-1">
                   {selected.spec}
                 </span>
               </div>

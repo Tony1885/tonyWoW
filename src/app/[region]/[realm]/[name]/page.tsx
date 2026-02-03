@@ -185,139 +185,106 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             ROSTER
                         </Link>
 
-                        <div className="flex items-center gap-4 md:gap-12">
-                            <Link
-                                href="/meta"
-                                className="group flex flex-col items-center gap-1 md:gap-2 text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] text-white/40 hover:text-white transition-all font-black"
-                            >
-                                <Trophy className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-125 transition-transform" />
-                                <span>META</span>
-                            </Link>
-
-                            <Link
-                                href="/collector"
-                                className="group flex flex-col items-center gap-1 md:gap-2 text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] text-white/40 hover:text-white transition-all font-black"
-                            >
-                                <Sparkles className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-125 transition-transform" />
-                                <span>COLLECTOR</span>
-                            </Link>
+                        <div className="w-full flex-col items-center gap-1 md:gap-2 mr-auto md:mr-0 hidden md:flex">
+                            {/* Spacer for layout balance */}
                         </div>
 
-                        <div className="text-[8px] md:text-[10px] font-black tracking-[0.4em] md:tracking-[0.6em] text-white/20 uppercase">
-                            <span>{realm.toUpperCase()}</span>
-                        </div>
+                        <Link
+                            href="/collector"
+                            className="group flex flex-col items-center gap-1 md:gap-2 text-[8px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] text-white/40 hover:text-white transition-all font-black"
+                        >
+                            <Sparkles className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-125 transition-transform" />
+                            <span>COLLECTOR</span>
+                        </Link>
                     </div>
 
-                    {!character ? (
-                        <div className="text-center py-20 md:py-32 glass border border-white/5 rounded-3xl backdrop-blur-3xl w-full max-w-2xl mx-auto mt-10 md:mt-20 shadow-2xl px-6">
-                            <ShieldAlert className="w-12 h-12 md:w-16 md:h-16 text-white/20 mx-auto mb-6 md:mb-8 animate-pulse" />
-                            <h1 className="text-2xl md:text-4xl font-black italic mb-4 uppercase text-white/80 tracking-tighter">Entité Introuvable</h1>
-                            <p className="text-white/40 text-[9px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] mb-10 md:mb-12 leading-loose">Impossible de synchroniser {decodedName}.</p>
-                            <Link href="/" className="inline-block px-8 md:px-12 py-4 md:py-5 bg-white text-black text-[9px] md:text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
+                    <div className="text-[8px] md:text-[10px] font-black tracking-[0.4em] md:tracking-[0.6em] text-white/20 uppercase">
+                        <span>{realm.toUpperCase()}</span>
+                    </div>
+                </div>
+
+                {!character ? (
+                    <div className="text-center py-20 md:py-32 glass border border-white/5 rounded-3xl backdrop-blur-3xl w-full max-w-2xl mx-auto mt-10 md:mt-20 shadow-2xl px-6">
+                        <ShieldAlert className="w-12 h-12 md:w-16 md:h-16 text-white/20 mx-auto mb-6 md:mb-8 animate-pulse" />
+                        <h1 className="text-2xl md:text-4xl font-black italic mb-4 uppercase text-white/80 tracking-tighter">Entité Introuvable</h1>
+                        <p className="text-white/40 text-[9px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] mb-10 md:mb-12 leading-loose">Impossible de synchroniser {decodedName}.</p>
+                        <Link href="/" className="inline-block px-8 md:px-12 py-4 md:py-5 bg-white text-black text-[9px] md:text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
+                    </div>
+                ) : (
+                    <div className="w-full flex flex-col items-center space-y-12 md:space-y-16 animate-in fade-in slide-in-from-bottom-5 duration-1000">
+
+                        <div className="text-center space-y-2">
+                            <h2 className="text-white/30 text-[8px] md:text-[9px] uppercase font-black tracking-[0.8em] md:tracking-[1.2em]">Azure Protocol // Gaming Hub</h2>
                         </div>
-                    ) : (
-                        <div className="w-full flex flex-col items-center space-y-12 md:space-y-16 animate-in fade-in slide-in-from-bottom-5 duration-1000">
 
-                            <div className="text-center space-y-2">
-                                <h2 className="text-white/30 text-[8px] md:text-[9px] uppercase font-black tracking-[0.8em] md:tracking-[1.2em]">Azure Protocol // Gaming Hub</h2>
-                            </div>
+                        <div className="w-full scale-95 md:scale-100 shadow-[0_50px_100px_rgba(0,0,0,1)] max-w-lg border border-white/10 rounded-2xl overflow-hidden transition-all duration-700 bg-zinc-900/40 backdrop-blur-3xl">
+                            <CharacterCard character={character} />
+                        </div>
 
-                            <div className="w-full scale-95 md:scale-100 shadow-[0_50px_100px_rgba(0,0,0,1)] max-w-lg border border-white/10 rounded-2xl overflow-hidden transition-all duration-700 bg-zinc-900/40 backdrop-blur-3xl">
-                                <CharacterCard character={character} />
-                            </div>
-
-                            <div className="w-full flex flex-col items-center space-y-12 pt-4">
-                                {categories.map((cat, i) => (
-                                    <div key={i} className="flex flex-col items-center space-y-6 md:space-y-8 w-full max-w-xl">
-                                        <div className="flex items-center gap-4 md:gap-6 w-full opacity-30 px-4 md:px-0">
-                                            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                                            <h2 className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-white font-black whitespace-nowrap">
-                                                {cat.title}
-                                            </h2>
-                                            <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/40 to-transparent" />
-                                        </div>
-
-                                        <div className={cn(
-                                            "flex flex-wrap justify-center gap-6 md:gap-10 px-4",
-                                            cat.title === "Meta" && "flex-col items-center"
-                                        )}>
-                                            {cat.links.map((link, li) => (
-                                                <a
-                                                    key={li}
-                                                    href={link.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className={cn(
-                                                        "group relative transition-all duration-500",
-                                                        cat.title === "Meta"
-                                                            ? "flex items-center gap-4 hover:translate-x-2"
-                                                            : "p-4 md:p-5 flex items-center justify-center border border-white/5 hover:border-white/20 hover:bg-white/[0.02] active:scale-95 rounded-2xl bg-white/[0.01]"
-                                                    )}
-                                                >
-                                                    <div className={cn(
-                                                        "flex items-center justify-center",
-                                                        cat.title === "Meta" ? "w-10 h-10 md:w-12 md:h-12" : "w-8 h-8 md:w-12 md:h-12"
-                                                    )}>
-                                                        <img
-                                                            src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
-                                                            alt={link.name}
-                                                            className={cn(
-                                                                "w-full h-full object-contain filter brightness-110 saturate-150 transition-all duration-500",
-                                                                link.icon ? "rounded-full border border-white/10" : "opacity-80 group-hover:opacity-100"
-                                                            )}
-                                                        />
-                                                    </div>
-                                                    {cat.title === "Meta" && (
-                                                        <span className={cn(
-                                                            "text-sm md:text-lg font-bold tracking-tight",
-                                                            link.name === "Devourer" ? "text-[#10b981]" : "text-white/80 group-hover:text-white"
-                                                        )}>
-                                                            {link.name}
-                                                        </span>
-                                                    )}
-                                                    {cat.title !== "Meta" && (
-                                                        <span className="md:hidden text-[7px] font-black tracking-widest absolute -bottom-4 opacity-30">{link.name}</span>
-                                                    )}
-                                                </a>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {charId !== "0" && (
-                                <div className="w-full flex flex-col items-center pt-8">
-                                    <div className="flex items-center gap-4 md:gap-6 w-full max-w-xl opacity-20 mb-8 md:mb-10 px-4 md:px-0">
-                                        <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent" />
-                                        <h2 className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-white font-black whitespace-nowrap text-center">
-                                            M+ Stats Stream
+                        <div className="w-full flex flex-col items-center space-y-12 pt-4">
+                            {categories.map((cat, i) => (
+                                <div key={i} className="flex flex-col items-center space-y-6 md:space-y-8 w-full max-w-xl">
+                                    <div className="flex items-center gap-4 md:gap-6 w-full opacity-30 px-4 md:px-0">
+                                        <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                                        <h2 className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-white font-black whitespace-nowrap">
+                                            {cat.title}
                                         </h2>
-                                        <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white to-transparent" />
+                                        <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/40 to-transparent" />
                                     </div>
 
-                                    <div className="w-full max-w-[340px] scale-90 md:scale-100 border border-white/10 rounded-3xl overflow-hidden bg-black/60 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.8)]">
-                                        <div className="p-4 bg-white/5 border-b border-white/10 text-[9px] md:text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between px-6">
-                                            <span>LIVE ANALYSIS</span>
-                                            <BarChart3 className="w-3 h-3 md:w-4 md:h-4 text-white/20" />
-                                        </div>
-                                        <div className="relative w-full h-[540px] overflow-hidden flex justify-center">
-                                            <iframe
-                                                src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${charId}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
-                                                style={{ border: 'none', width: '300px', height: '540px' }}
-                                                title="Mythic+ Progression Widget"
-                                            />
-                                        </div>
+                                    <div className={cn(
+                                        "flex flex-wrap justify-center gap-6 md:gap-10 px-4",
+                                        cat.title === "Meta" && "flex-col items-center"
+                                    )}>
+                                        {cat.links.map((link, li) => (
+                                            <a
+                                                key={li}
+                                                href={link.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={cn(
+                                                    "group relative transition-all duration-500",
+                                                    cat.title === "Meta"
+                                                        ? "flex items-center gap-4 hover:translate-x-2"
+                                                        : "p-4 md:p-5 flex items-center justify-center border border-white/5 hover:border-white/20 hover:bg-white/[0.02] active:scale-95 rounded-2xl bg-white/[0.01]"
+                                                )}
+                                            >
+                                                <div className={cn(
+                                                    "flex items-center justify-center",
+                                                    cat.title === "Meta" ? "w-10 h-10 md:w-12 md:h-12" : "w-8 h-8 md:w-12 md:h-12"
+                                                )}>
+                                                    <img
+                                                        src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
+                                                        alt={link.name}
+                                                        className={cn(
+                                                            "w-full h-full object-contain filter brightness-110 saturate-150 transition-all duration-500",
+                                                            link.icon ? "rounded-full border border-white/10" : "opacity-80 group-hover:opacity-100"
+                                                        )}
+                                                    />
+                                                </div>
+                                                {cat.title === "Meta" && (
+                                                    <span className={cn(
+                                                        "text-sm md:text-lg font-bold tracking-tight",
+                                                        link.name === "Devourer" ? "text-[#10b981]" : "text-white/80 group-hover:text-white"
+                                                    )}>
+                                                        {link.name}
+                                                    </span>
+                                                )}
+                                                {cat.title !== "Meta" && (
+                                                    <span className="md:hidden text-[7px] font-black tracking-widest absolute -bottom-4 opacity-30">{link.name}</span>
+                                                )}
+                                            </a>
+                                        ))}
                                     </div>
                                 </div>
-                            )}
-
+                            ))}
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    <footer className="mt-20 md:mt-40 pb-10 md:pb-20 text-center opacity-10">
-                        <p className="text-[7px] md:text-[9px] tracking-[1.5em] font-black uppercase">End Of Session // Gaming Hub</p>
-                    </footer>
-                </div>
+                <footer className="mt-20 md:mt-40 pb-10 md:pb-20 text-center opacity-10">
+                    <p className="text-[7px] md:text-[9px] tracking-[1.5em] font-black uppercase">End Of Session // Gaming Hub</p>
+                </footer>
             </div>
         );
     } catch (err) {
