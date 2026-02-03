@@ -56,8 +56,8 @@ const CLASS_COLORS: Record<string, string> = {
 // Character IDs for Raider.io Dynamic Widget
 const CHARACTER_IDS: Record<string, string> = {
     "moussman": "288772995",
-    "mamènne": "284898236",
-    "mamenne": "284898236"
+    "mamènne": "232212929",
+    "mamenne": "232212929"
 };
 
 function safeDecode(val: string) {
@@ -130,6 +130,11 @@ export default async function CharacterHubPage({ params }: PageProps) {
                         name: "Mistweaver",
                         url: "https://murlok.io/monk/mistweaver/m+",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/spell_monk_mistweaver_spec.jpg",
+                    },
+                    {
+                        name: "Windwalker",
+                        url: "https://murlok.io/monk/windwalker/m+",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/spell_monk_windwalker_spec.jpg",
                     }
                 ]
             });
@@ -147,6 +152,11 @@ export default async function CharacterHubPage({ params }: PageProps) {
                         name: "Havoc",
                         url: "https://murlok.io/demon-hunter/havoc/m+",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/ability_demonhunter_specdmg.jpg",
+                    },
+                    {
+                        name: "Class",
+                        url: "https://murlok.io/demon-hunter",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/classicon_demonhunter.jpg",
                     }
                 ]
             });

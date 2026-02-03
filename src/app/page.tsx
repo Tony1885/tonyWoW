@@ -107,6 +107,33 @@ export default function CharacterSelectPage() {
       {/* Floating UI Elements */}
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-between pb-24 pt-16 px-6 pointer-events-none">
 
+        {/* Header Links */}
+        <div className="absolute top-12 left-12 right-12 flex justify-between items-center pointer-events-auto">
+          <a
+            href="https://www.wowhead.com/news"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col items-start gap-1 text-[10px] font-black tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase"
+          >
+            <span className="flex items-center gap-2">
+              <Compass className="w-4 h-4 opacity-50 group-hover:rotate-45 transition-transform" />
+              WOWHEAD NEWS
+            </span>
+            <span className="text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Azeroth Updates</span>
+          </a>
+
+          <button
+            onClick={handleOpenCollectorHub}
+            className="group flex flex-col items-end gap-1 text-[10px] font-black tracking-[0.4em] text-white/30 hover:text-white transition-all uppercase"
+          >
+            <span className="flex items-center gap-2">
+              MODE COLLECTOR
+              <Sparkles className="w-4 h-4 opacity-50 group-hover:scale-125 transition-transform" />
+            </span>
+            <span className="text-[8px] opacity-20 group-hover:opacity-40 tracking-[0.2em] lowercase">Mounts • Achievs</span>
+          </button>
+        </div>
+
         {/* Top Hint */}
         <div className="opacity-20 flex flex-col items-center gap-2">
           <p className="text-[10px] tracking-[1.5em] font-black uppercase text-white">SCROLLEZ POUR CHOISIR</p>
@@ -118,22 +145,6 @@ export default function CharacterSelectPage() {
               style={{ height: '30%' }}
             />
           </div>
-        </div>
-
-        {/* Collector Hub Switcher (Left Side) */}
-        <div className="absolute left-12 top-1/2 -translate-y-1/2 flex flex-col gap-8 pointer-events-auto">
-          <button
-            onClick={handleOpenCollectorHub}
-            className="group flex flex-col items-center gap-6 p-6 rounded-[2rem] border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all duration-700 hover:scale-110 shadow-2xl backdrop-blur-3xl"
-          >
-            <div className="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center group-hover:border-black/20 group-hover:scale-110 transition-all duration-500">
-              <Sparkles className="w-8 h-8 group-hover:rotate-12 transition-transform" />
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[10px] font-black tracking-widest uppercase opacity-40 group-hover:opacity-100">MODE COLLECTOR</span>
-              <span className="text-[8px] font-bold tracking-[0.4em] uppercase opacity-20 group-hover:opacity-40">Mounts • Achievs • News</span>
-            </div>
-          </button>
         </div>
 
         {/* Selected Character Label (Small & Class-Colored) */}
