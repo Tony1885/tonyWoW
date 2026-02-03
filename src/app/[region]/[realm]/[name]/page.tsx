@@ -42,13 +42,6 @@ const CLASS_COLORS: Record<string, string> = {
     "evoker": "#33937F",
 };
 
-// High quality transparent renders
-const CHARACTER_RENDERS: Record<string, string> = {
-    "moussman": "https://render.worldofwarcraft.com/eu/character/ysondre/41/176557609-main-raw.png",
-    "mamènne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main-raw.png",
-    "mamenne": "https://render.worldofwarcraft.com/eu/character/ysondre/251/173840891-main-raw.png"
-};
-
 function safeDecode(val: string) {
     if (!val) return "";
     try {
@@ -77,7 +70,6 @@ export default async function CharacterHubPage({ params }: PageProps) {
 
         const classKey = character?.class?.toLowerCase() || "";
         const classColor = CLASS_COLORS[classKey] || "#ffffff";
-        const characterRender = CHARACTER_RENDERS[decodedName] || CHARACTER_RENDERS[name];
 
         const encName = encodeURIComponent(name);
 
@@ -145,17 +137,6 @@ export default async function CharacterHubPage({ params }: PageProps) {
                     />
                 </div>
 
-                {/* Character Skin Background Render */}
-                {characterRender && (
-                    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-10">
-                        <img
-                            src={characterRender}
-                            alt=""
-                            className="h-[140vh] w-auto object-contain scale-125 filter saturate-[1.5] brightness-125 select-none"
-                        />
-                    </div>
-                )}
-
                 <div className="relative z-10 w-full pt-4 pb-20 px-6 max-w-[1900px]">
                     <Link
                         href="/"
@@ -173,39 +154,26 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             <Link href="/" className="inline-block px-12 py-5 bg-white text-black text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
                         </div>
                     ) : (
-                        <div className="w-full grid grid-cols-1 lg:grid-cols-[1.2fr_1fr_1.2fr] gap-0 items-start">
+                        <div className="w-full flex flex-col lg:flex-row gap-12 items-start justify-center pt-20">
 
-                            {/* Left Side: Large Full Render */}
-                            <div className="hidden lg:flex justify-start shrink-0 pointer-events-none sticky top-12 left-0 h-[85vh]">
-                                <div className="relative w-full h-full flex flex-col justify-center">
-                                    <img
-                                        src={characterRender}
-                                        alt={character.name}
-                                        className="h-full w-auto object-contain drop-shadow-[0_0_100px_rgba(255,255,255,0.2)] filter saturate-[1.4] brightness-110 -translate-x-[20%]"
-                                    />
-                                    <div className="absolute bottom-20 left-10 w-64 h-16 bg-black/60 blur-[100px] rounded-full" />
-                                </div>
-                            </div>
+                            {/* Main Content Area */}
+                            <div className="flex-1 flex flex-col items-center space-y-20 w-full">
 
-                            {/* Center Content */}
-                            <div className="flex flex-col items-center space-y-20 w-full py-10 min-h-screen">
-                                <header className="text-center space-y-6">
-                                    <h1 className="text-8xl md:text-[11rem] font-black tracking-tighter mb-0 italic uppercase flex flex-col leading-none">
-                                        <span className="text-white drop-shadow-[0_20px_60px_rgba(0,0,0,1)] whitespace-nowrap">{character.name}</span>
-                                        <span className="text-white/10 not-italic text-5xl tracking-[0.4em] -mt-2">COMMAND HUB</span>
-                                    </h1>
-                                    <div className="flex items-center justify-center gap-8 text-[11px] uppercase tracking-[0.8em] text-white/30 font-black">
-                                        <span className="w-16 h-[1px] bg-white/10" />
-                                        <span>{realm.toUpperCase()} // {region.toUpperCase()}</span>
-                                        <span className="w-16 h-[1px] bg-white/10" />
+                                {/* Character Name & Realm (Minimalist Title) */}
+                                <div className="text-center space-y-2">
+                                    <h2 className="text-white/20 text-[10px] uppercase font-black tracking-[1em]">SYSTEM COMMAND // SYNCHRONIZED</h2>
+                                    <div className="flex items-center justify-center gap-4 text-xs font-black tracking-[0.4em] text-white/40">
+                                        <span>{realm.toUpperCase()}</span>
+                                        <span className="w-1 h-1 rounded-full bg-white/20" />
+                                        <span>{region.toUpperCase()}</span>
                                     </div>
-                                </header>
+                                </div>
 
-                                <div className="w-full shadow-[0_50px_120px_rgba(0,0,0,0.9)] max-w-lg border border-white/10 hover:border-white/20 rounded-xl overflow-hidden transition-all duration-700">
+                                <div className="w-full shadow-[0_50px_120px_rgba(0,0,0,0.9)] max-w-lg border border-white/10 hover:border-white/20 rounded-xl overflow-hidden transition-all duration-700 mx-auto">
                                     <CharacterCard character={character} />
                                 </div>
 
-                                <div className="w-full space-y-20 pt-12 max-w-sm">
+                                <div className="w-full space-y-20 pt-12 max-w-sm mx-auto">
                                     {categories.map((cat, i) => (
                                         <div key={i} className="flex flex-col items-center space-y-10">
                                             <div className="flex items-center gap-6 w-full opacity-60">
@@ -244,7 +212,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             </div>
 
                             {/* Right Side: Raider.io Widget */}
-                            <div className="w-full flex justify-end px-12 mt-20 lg:mt-0 lg:sticky lg:top-24">
+                            <div className="w-full lg:w-[360px] flex justify-end px-0 mt-20 lg:mt-0 lg:sticky lg:top-24">
                                 <div className="w-full max-w-[340px] border border-white/10 rounded-xl overflow-hidden backdrop-blur-3xl shadow-2xl">
                                     <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
                                         <span>MYTHIC+ LOGS</span>
