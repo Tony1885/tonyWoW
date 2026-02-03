@@ -143,7 +143,7 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.5em] text-white/50 hover:text-white transition-all group font-black"
                         >
                             <ChevronLeft className="w-5 h-5 group-hover:-translate-x-2 transition-transform" />
-                            Retour au Menu
+                            MENU
                         </Link>
                     </div>
 
@@ -155,13 +155,13 @@ export default async function CharacterHubPage({ params }: PageProps) {
                             <Link href="/" className="inline-block px-12 py-5 bg-white text-black text-[11px] font-black tracking-[0.4em] hover:bg-white/80 transition-all border border-white/20 shadow-xl">REESSAYER</Link>
                         </div>
                     ) : (
-                        <div className="w-full flex flex-col items-center space-y-16">
+                        <div className="w-full flex flex-col items-center space-y-12">
 
                             {/* Header Info */}
-                            <div className="text-center space-y-3">
-                                <div className="flex items-center justify-center gap-4 text-[10px] font-black tracking-[0.6em] text-white/20 uppercase">
+                            <div className="text-center space-y-2">
+                                <div className="flex items-center justify-center gap-4 text-[10px] font-black tracking-[0.6em] text-white/40 uppercase">
                                     <span>{realm.toUpperCase()}</span>
-                                    <span className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
                                     <span>{region.toUpperCase()}</span>
                                 </div>
                                 <h2 className="text-white/30 text-[9px] uppercase font-black tracking-[1.2em]">Azure Protocol // Connected</h2>
@@ -172,34 +172,34 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                 <CharacterCard character={character} />
                             </div>
 
-                            {/* Centered Links Categories */}
-                            <div className="w-full flex flex-col items-center space-y-16 pt-8">
+                            {/* Logos & Categories */}
+                            <div className="w-full flex flex-col items-center space-y-12 pt-4">
                                 {categories.map((cat, i) => (
-                                    <div key={i} className="flex flex-col items-center space-y-10 w-full max-w-xl">
-                                        <div className="flex items-center gap-6 w-full opacity-40">
+                                    <div key={i} className="flex flex-col items-center space-y-6 w-full max-w-xl">
+                                        <div className="flex items-center gap-6 w-full opacity-30">
                                             <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                                            <h2 className="text-[10px] uppercase tracking-[0.5em] text-white font-black whitespace-nowrap">
+                                            <h2 className="text-[10px] uppercase tracking-[0.4em] text-white font-black whitespace-nowrap">
                                                 {cat.title}
                                             </h2>
                                             <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/40 to-transparent" />
                                         </div>
 
-                                        <div className="flex flex-wrap justify-center gap-10">
+                                        <div className="flex flex-wrap justify-center gap-8">
                                             {cat.links.map((link, li) => (
                                                 <a
                                                     key={li}
                                                     href={link.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="group relative p-6 flex items-center justify-center border border-white/10 hover:border-white/40 hover:bg-white/[0.05] hover:scale-125 transition-all duration-500 bg-white/[0.02] backdrop-blur-3xl rounded-3xl shadow-2xl"
+                                                    className="group relative p-4 flex items-center justify-center border border-white/5 hover:border-white/20 hover:bg-white/[0.02] hover:scale-110 transition-all duration-500 rounded-xl"
                                                 >
-                                                    <div className="w-14 h-14 flex items-center justify-center">
+                                                    <div className="w-12 h-12 flex items-center justify-center">
                                                         <img
                                                             src={link.icon || `https://www.google.com/s2/favicons?domain=${link.domain}&sz=128`}
                                                             alt={link.name}
                                                             className={cn(
-                                                                "w-full h-full object-contain filter brightness-110",
-                                                                link.icon ? "rounded-md" : "saturate-150"
+                                                                "w-full h-full object-contain filter brightness-110 saturate-150",
+                                                                link.icon ? "" : "opacity-80 group-hover:opacity-100"
                                                             )}
                                                         />
                                                     </div>
@@ -208,6 +208,30 @@ export default async function CharacterHubPage({ params }: PageProps) {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+
+                            {/* Mythic+ Data Stream (Iframe Widget) */}
+                            <div className="w-full flex flex-col items-center pt-8">
+                                <div className="flex items-center gap-6 w-full max-w-xl opacity-30 mb-6">
+                                    <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                                    <h2 className="text-[10px] uppercase tracking-[0.4em] text-white font-black whitespace-nowrap">
+                                        Mythic+ Data Stream
+                                    </h2>
+                                    <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-white/40 to-transparent" />
+                                </div>
+
+                                <div className="w-full max-w-[340px] border border-white/10 rounded-2xl overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_30px_80px_rgba(0,0,0,0.8)]">
+                                    <div className="p-4 bg-white/5 border-b border-white/10 text-[10px] uppercase tracking-[0.5em] text-white/50 font-black flex items-center justify-between">
+                                        <span>LATEST RUNS</span>
+                                        <BarChart3 className="w-4 h-4 text-white/20" />
+                                    </div>
+                                    <div className="relative w-full h-[540px] overflow-hidden">
+                                        <iframe
+                                            src={`https://raider.io/widgets/dungeons?numRuns=5&date=all&characterId=${decodedName === 'moussman' ? '288772995' : '0'}&type=character&includeEmptyDungeons=true&chromargb=transparent&season=season-tww-3`}
+                                            style={{ border: 'none', width: '300px', height: '540px', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
